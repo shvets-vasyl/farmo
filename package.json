@@ -12,12 +12,15 @@
   "dependencies": {
     "@tonconnect/ui": "^2.0.9",
     "@vee-validate/nuxt": "^4.13.2",
+    "@walletconnect/web3-provider": "^1.8.0",
+    "ethers": "^6.13.4",
     "gsap": "^3.12.5",
     "nuxt": "^3.13.0",
     "sass": "^1.79.4",
     "sass-loader": "^16.0.2",
     "vue": "latest",
     "vue-router": "latest",
+    "web3": "^4.13.0",
     "yup": "^1.4.0"
   }
 }

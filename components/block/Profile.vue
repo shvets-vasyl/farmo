@@ -103,7 +103,7 @@
           <IconsTon />
           <div class="t1">TON</div>
         </button>
-        <button class="profile__wallet-option">
+        <button class="profile__wallet-option" @click="connectWallet">
           <IconsEthereum />
           <div class="t1">Ethereum</div>
         </button>
@@ -198,7 +198,7 @@ onMounted(() => {
     manifestUrl: `${SITE_URL}/tonconnect-manifest.json`,
   });
 
-  tonConnectUI.value.onStatusChange((walletAndwalletInfo) => {
+  tonConnectUI.value.onStatusChange((walletAndwalletInfo: any) => {
     console.log(walletAndwalletInfo);
     isWalletConnected.value = true;
   });
@@ -206,6 +206,15 @@ onMounted(() => {
 
 const openTon = async () => {
   await tonConnectUI.value.openModal();
+};
+
+const accounts = ref<string[]>([]);
+
+const connectWallet = async () => {
+  const result = await connectWallet();
+  // if (result) {
+  //   accounts.value = result.accounts;
+  // }
 };
 </script>
 

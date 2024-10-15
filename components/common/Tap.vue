@@ -1,8 +1,8 @@
 <template>
   <div
     class="tap"
-    @touchstart="onPress"
-    @touchend="onRelease"
+    @mousedown="onPress"
+    @mouseup="onRelease"
     @touchcancel="onRelease"
   >
     <div class="tap__circle">
@@ -65,7 +65,7 @@
 import type { DignityNames, Levels } from "@/types/common";
 import { gsap } from "gsap";
 
-const onPress = (event: TouchEvent) => {
+const onPress = (event: TouchEvent | MouseEvent) => {
   store.coins += 1;
 
   const circle2 = document.querySelector(".tap__circle2");
@@ -75,11 +75,13 @@ const onPress = (event: TouchEvent) => {
 
   gsap.to(circle2, { opacity: 1, duration: 0.1 });
 
-  const touch = event.touches[0];
   const tapRect = tap.getBoundingClientRect();
-
-  const x = touch.clientX - (tapRect.left || 0);
-  const y = touch.clientY - (tapRect.top || 0);
+  const x =
+    (event instanceof TouchEvent ? event.touches[0].clientX : event.clientX) -
+    (tapRect.left || 0);
+  const y =
+    (event instanceof TouchEvent ? event.touches[0].clientY : event.clientY) -
+    (tapRect.top || 0);
 
   const rotationX = (y / tapRect.height - 0.5) * 20;
   const rotationY = (x / tapRect.width - 0.5) * 20;
@@ -208,22 +210,22 @@ watch(
   pointer-events: none;
 }
 .tap__panda img {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
 }
 .tap__panda img._active {
-	opacity: 1;
+  opacity: 1;
 }
 .tap__panda img:nth-child(2) {
-	width: 105%;
+  width: 105%;
 }
 .tap__panda img:nth-child(4) {
-	width: 120%;
+  width: 120%;
 }
 .tap__panda img:nth-child(5) {
-	width: 120%;
+  width: 120%;
 }
 </style>
