@@ -58,14 +58,14 @@
                   {{ item.online ? "Online" : "Offline" }}
                   <IconsCheckbox v-if="item.online" />
                 </div>
-								<div class="invite__invited-friend-coins">
+								<!-- <div class="invite__invited-friend-coins">
 									<div class="invite__invited-friend-coins-icon">
 										<img src="/coin.png" draggable="false" alt="" />
 									</div>
 									<div class="invite__invited-friend-coins-number t1">
 										{{ formatCoins(item.coins) }}
 									</div>
-							</div>
+								</div> -->
               </div>
             </div>
           </div>
@@ -229,6 +229,7 @@ const formatCoins = (coins: number) => {
 	flex: 1 1 auto;
 	border-bottom: 1px solid var(--c-grey-5);
 	padding-bottom: rem(16);
+	align-items: center;
 }
 .invite__invited-friend-coins {
 	display: flex;

@@ -8,7 +8,7 @@
       <div class="tab__item-icon">
         <img src="/tab-main.png" draggable="false" alt="" />
       </div>
-      <div class="tab__item-text t3">Main</div>
+      <div class="tab__item-text t2">Main</div>
     </button>
 
     <button
@@ -19,7 +19,7 @@
       <div class="tab__item-icon">
         <IconsProfile />
       </div>
-      <div class="tab__item-text t3">Profile</div>
+      <div class="tab__item-text t2">Profile</div>
     </button>
 
     <button
@@ -30,7 +30,7 @@
       <div class="tab__item-icon">
         <IconsFriends />
       </div>
-      <div class="tab__item-text t3">Friends</div>
+      <div class="tab__item-text t2">Friends</div>
     </button>
   </div>
 </template>
@@ -42,12 +42,12 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: rem(60);
+  height: rem(75);
   background: var(--c-grey-2);
   z-index: var(--z-tabs);
   padding: rem(6);
   display: flex;
-  gap: rem(42);
+  gap: rem(30);
   justify-content: center;
 }
 .tab__item {
@@ -58,14 +58,14 @@
   gap: rem(5);
   border-radius: rem(8);
   opacity: 0.5;
-  flex: 0 0 rem(78);
+  flex: 0 0 rem(100);
 }
 .tab__item._active {
   background: var(--c-grey-1);
   opacity: 1;
 }
 .tab__item-icon {
-  height: rem(25);
+  height: rem(35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -75,9 +75,9 @@
   opacity: 1;
 }
 .tab__item:nth-child(1) .tab__item-icon {
-  width: rem(25);
+  width: rem(35);
 }
 .tab__item:nth-child(2) .tab__item-icon {
-  width: rem(16);
+  width: rem(28);
 }
 </style>

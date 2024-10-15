@@ -28,6 +28,6 @@
 <script lang="ts" setup></script>
 <style lang="scss" scoped>
 .icon {
-  width: rem(20);
+  width: rem(35);
 }
 </style>
