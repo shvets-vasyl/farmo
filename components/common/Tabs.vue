@@ -78,6 +78,9 @@
   width: rem(35);
 }
 .tab__item:nth-child(2) .tab__item-icon {
-  width: rem(28);
+  width: rem(24);
+}
+.tab__item:nth-child(3) .tab__item-icon {
+  width: rem(55);
 }
 </style>

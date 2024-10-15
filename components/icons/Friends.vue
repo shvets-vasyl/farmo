@@ -34,6 +34,6 @@
 <script lang="ts" setup></script>
 <style lang="scss" scoped>
 .icon {
-  width: rem(35);
+  width: 100%;
 }
 </style>
