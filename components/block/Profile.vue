@@ -191,18 +191,17 @@ const onSubmit = async (values: ProfileValues) => {
 const tonConnectUI = ref();
 const isWalletConnected = ref(false);
 
+const { SITE_URL } = useRuntimeConfig().public;
+
 onMounted(() => {
   tonConnectUI.value = new TonConnectUI({
-    manifestUrl:
-      "https://ae4c-5-58-157-7.ngrok-free.app/tonconnect-manifest.json",
+    manifestUrl: `${SITE_URL}/tonconnect-manifest.json`,
   });
 
-  tonConnectUI.value.onStatusChange(
-    (walletAndwalletInfo) => {
-      console.log(walletAndwalletInfo);
-      isWalletConnected.value = true;
-    }
-  );
+  tonConnectUI.value.onStatusChange((walletAndwalletInfo) => {
+    console.log(walletAndwalletInfo);
+    isWalletConnected.value = true;
+  });
 });
 
 const openTon = async () => {

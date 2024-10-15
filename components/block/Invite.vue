@@ -17,7 +17,7 @@
           <div class="h5">Invite a friend</div>
           <div class="invite__gift-coins">
             <img src="/coin.png" alt="coin" class="invite__gift-coins-icon" />
-            <span class="t1 invite__gift-coins-number">+5,000</span>
+            <span class="t1 invite__gift-coins-number">+1,000</span>
             <span class="t1 invite__gift-coins-text">
               for you and your friend
             </span>

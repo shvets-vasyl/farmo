@@ -118,7 +118,7 @@ const onPress = (event: TouchEvent) => {
   gsap.to(tap, {
     rotationX: -rotationX,
     rotationY: rotationY,
-    duration: 0.5,
+    duration: 0.1,
     ease: "power1.out",
     transformOrigin: transformOrigin,
   });
@@ -137,7 +137,7 @@ const onRelease = () => {
   gsap.to(tap, {
     rotationX: 0,
     rotationY: 0,
-    duration: 0.5,
+    duration: 0.1,
     ease: "power1.out",
   });
 };
