@@ -97,13 +97,13 @@
       <div class="profile__wallet-options">
         <button
           class="profile__wallet-option"
-          @click="openTon"
+          @click="connectTonWallet"
           :class="{ _connected: isWalletConnected }"
         >
           <IconsTon />
           <div class="t1">TON</div>
         </button>
-        <button class="profile__wallet-option" @click="connectWallet">
+        <button class="profile__wallet-option" @click="connectOtherWallet">
           <IconsEthereum />
           <div class="t1">Ethereum</div>
         </button>
@@ -126,6 +126,10 @@ import { Form } from "vee-validate";
 import * as Yup from "yup";
 import type { ProfileValues } from "@/types/forms";
 import { TonConnectUI } from "@tonconnect/ui";
+import { useAppKit } from '@reown/appkit/vue'
+
+const modal = useAppKit()
+const { SITE_URL } = useRuntimeConfig().public;
 
 const messages = reactive({
   ava: "",
@@ -133,6 +137,10 @@ const messages = reactive({
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const MAX_WIDTH = 500;
 const MAX_HEIGHT = 500;
+
+onMounted(() => {
+	initTonWallet()
+});
 
 const pickPhoto = () => {
   const fileInput = document.querySelector(
@@ -174,6 +182,31 @@ const onChangeInputFile = (event: Event): void => {
   }
 };
 
+const onSubmit = async (values: ProfileValues) => {
+  console.log(values);
+};
+
+const tonConnectUI = ref();
+const isWalletConnected = ref(false);
+
+const initTonWallet = () => {
+	tonConnectUI.value = new TonConnectUI({
+    manifestUrl: `${SITE_URL}/tonconnect-manifest.json`,
+  });
+
+  tonConnectUI.value.onStatusChange((walletAndwalletInfo: any) => {
+    console.log(walletAndwalletInfo);
+    isWalletConnected.value = true;
+  });
+}
+
+const connectTonWallet = async () => {
+  await tonConnectUI.value.openModal();
+};
+const connectOtherWallet = async () => {
+  await modal.open();
+};
+
 const formSchema = Yup.object().shape({
   phone: Yup.string()
     .required("Is a required field")
@@ -183,39 +216,6 @@ const formSchema = Yup.object().shape({
   country: Yup.string().required("Is a required field"),
   region: Yup.string().required("Is a required field"),
 });
-
-const onSubmit = async (values: ProfileValues) => {
-  console.log(values);
-};
-
-const tonConnectUI = ref();
-const isWalletConnected = ref(false);
-
-const { SITE_URL } = useRuntimeConfig().public;
-
-onMounted(() => {
-  tonConnectUI.value = new TonConnectUI({
-    manifestUrl: `${SITE_URL}/tonconnect-manifest.json`,
-  });
-
-  tonConnectUI.value.onStatusChange((walletAndwalletInfo: any) => {
-    console.log(walletAndwalletInfo);
-    isWalletConnected.value = true;
-  });
-});
-
-const openTon = async () => {
-  await tonConnectUI.value.openModal();
-};
-
-const accounts = ref<string[]>([]);
-
-const connectWallet = async () => {
-  const result = await connectWallet();
-  // if (result) {
-  //   accounts.value = result.accounts;
-  // }
-};
 </script>
 
 <style lang="scss" scoped>
