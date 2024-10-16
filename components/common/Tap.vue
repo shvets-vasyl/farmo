@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="tap"
-    @mousedown="onPress"
-    @mouseup="onRelease"
-    @touchcancel="onRelease"
-  >
+  <div class="tap" @click="onPress">
     <div class="tap__circle">
       <img src="/circle-tap.png" draggable="false" alt="" />
     </div>
@@ -65,7 +60,7 @@
 import type { DignityNames, Levels } from "@/types/common";
 import { gsap } from "gsap";
 
-const onPress = (event: TouchEvent | MouseEvent) => {
+const onPress = (event: MouseEvent) => {
   store.coins += 1;
 
   const circle2 = document.querySelector(".tap__circle2");
@@ -73,15 +68,9 @@ const onPress = (event: TouchEvent | MouseEvent) => {
 
   if (!tap) return;
 
-  gsap.to(circle2, { opacity: 1, duration: 0.1 });
-
   const tapRect = tap.getBoundingClientRect();
-  const x =
-    (event instanceof TouchEvent ? event.touches[0].clientX : event.clientX) -
-    (tapRect.left || 0);
-  const y =
-    (event instanceof TouchEvent ? event.touches[0].clientY : event.clientY) -
-    (tapRect.top || 0);
+  const x = event.clientX - (tapRect.left || 0);
+  const y = event.clientY - (tapRect.top || 0);
 
   const rotationX = (y / tapRect.height - 0.5) * 20;
   const rotationY = (x / tapRect.width - 0.5) * 20;
@@ -108,6 +97,15 @@ const onPress = (event: TouchEvent | MouseEvent) => {
 
   tap.appendChild(tapElement);
 
+  if (navigator.vibrate) {
+    navigator.vibrate(200);
+  }
+
+  // animation
+  const tl = gsap.timeline();
+  tl.to(circle2, { opacity: 1, duration: 0.1 });
+  tl.to(circle2, { opacity: 0, duration: 0.1 });
+
   gsap.to(tapElement, {
     y: -200,
     opacity: 0,
@@ -124,10 +122,6 @@ const onPress = (event: TouchEvent | MouseEvent) => {
     ease: "power1.out",
     transformOrigin: transformOrigin,
   });
-
-  if (navigator.vibrate) {
-    navigator.vibrate(200);
-  }
 };
 
 const onRelease = () => {
