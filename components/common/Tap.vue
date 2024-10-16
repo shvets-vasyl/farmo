@@ -106,36 +106,33 @@ const onPress = (event: MouseEvent) => {
   tl.to(circle2, { opacity: 1, duration: 0.1 });
   tl.to(circle2, { opacity: 0, duration: 0.1 });
 
-  gsap.to(tapElement, {
+	tl.to(tapElement, {
     y: -200,
-    opacity: 0,
     duration: 1,
-    onComplete: () => {
+  }, 0);
+	tl.to(tapElement, {
+		opacity: 0,
+		delay: 0.5,
+		onComplete: () => {
       tap.removeChild(tapElement);
     },
-  });
+	}, 0)
 
-  gsap.to(tap, {
+	tl.to(tap, {
     rotationX: -rotationX,
     rotationY: rotationY,
     duration: 0.1,
     ease: "power1.out",
     transformOrigin: transformOrigin,
-  });
-};
+  }, 0);
 
-const onRelease = () => {
-  const circle2 = document.querySelector(".tap__circle2");
-  const tap = document.querySelector(".tap");
-
-  gsap.to(circle2, { opacity: 0, duration: 0.1 });
-
-  gsap.to(tap, {
+	tl.to(tap, {
     rotationX: 0,
     rotationY: 0,
     duration: 0.1,
+		delay: 0.1,
     ease: "power1.out",
-  });
+  }, 0);
 };
 
 const levelUp = (level: Levels, dignity: DignityNames) => {
