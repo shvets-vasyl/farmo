@@ -59,6 +59,7 @@
 <script lang="ts" setup>
 import type { DignityNames, Levels } from "@/types/common";
 import { gsap } from "gsap";
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 const onPress = (event: MouseEvent) => {
   store.coins += 1;
@@ -96,6 +97,8 @@ const onPress = (event: MouseEvent) => {
   tapElement.style.top = `${y}px`;
 
   tap.appendChild(tapElement);
+
+	Haptics.impact({ style: ImpactStyle.Medium });
 
   if (navigator.vibrate) {
     navigator.vibrate(20);
