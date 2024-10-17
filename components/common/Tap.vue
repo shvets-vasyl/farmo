@@ -98,7 +98,11 @@ const onPress = (event: MouseEvent) => {
 
   tap.appendChild(tapElement);
 
-	Haptics.impact({ style: ImpactStyle.Medium });
+	Haptics.vibrate();
+
+
+	console.log(Haptics);
+
 
   if (navigator.vibrate) {
     navigator.vibrate(20);
