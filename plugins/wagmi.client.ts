@@ -1,32 +1,35 @@
-import { createAppKit } from '@reown/appkit/vue'
-import { arbitrum, mainnet } from '@reown/appkit/networks'
-import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
-
-const projectId = '5ccf2631f5d86346dd5838b38673200b'
-
-const metadata = {
-	name: 'Panda',
-	description: 'Panda Tap App',
-	url: 'https://panda-tap-app.vercel.app',
-	icons: ['https://assets.reown.com/reown-profile-pic.png']
-}
-
-const networks = [mainnet, arbitrum]
-
-const wagmiAdapter = new WagmiAdapter({
-	ssr: true,
-	projectId,
-	networks
-})
+import { createAppKit } from "@reown/appkit/vue";
+import { arbitrum, mainnet } from "@reown/appkit/networks";
+import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 
 export default defineNuxtPlugin(() => {
-	createAppKit({
-		adapters: [wagmiAdapter],
-		networks: [mainnet, arbitrum],
-		metadata,
-		projectId,
-		features: {
-			analytics: true
-		}
-	})
+  const config = useRuntimeConfig().public;
+
+  const projectId = config.PROJECT_ID;
+  const siteUrl = config.SITE_URL;
+
+  const networks = [mainnet, arbitrum];
+
+  const metadata = {
+    name: "Panda",
+    description: "Panda Tap App",
+    url: siteUrl,
+    icons: [`${siteUrl}/tab-main.png`],
+  };
+
+  const wagmiAdapter = new WagmiAdapter({
+    ssr: true,
+    projectId,
+    networks,
+  });
+
+  createAppKit({
+    adapters: [wagmiAdapter],
+    networks: [mainnet, arbitrum],
+    metadata,
+    projectId,
+    features: {
+      analytics: true,
+    },
+  });
 });

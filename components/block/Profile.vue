@@ -125,10 +125,10 @@
 import { Form } from "vee-validate";
 import * as Yup from "yup";
 import type { ProfileValues } from "@/types/forms";
-import { TonConnectUI } from "@tonconnect/ui";
-import { useAppKit } from '@reown/appkit/vue'
+import { TonConnectUI, THEME } from "@tonconnect/ui";
+import { useAppKit } from "@reown/appkit/vue";
 
-const modal = useAppKit()
+const modal = useAppKit();
 const { SITE_URL } = useRuntimeConfig().public;
 
 const messages = reactive({
@@ -139,7 +139,7 @@ const MAX_WIDTH = 500;
 const MAX_HEIGHT = 500;
 
 onMounted(() => {
-	initTonWallet()
+  initTonWallet();
 });
 
 const pickPhoto = () => {
@@ -190,15 +190,19 @@ const tonConnectUI = ref();
 const isWalletConnected = ref(false);
 
 const initTonWallet = () => {
-	tonConnectUI.value = new TonConnectUI({
+  tonConnectUI.value = new TonConnectUI({
     manifestUrl: `${SITE_URL}/tonconnect-manifest.json`,
   });
+  tonConnectUI.value.uiOptions = {
+    uiPreferences: {
+      theme: THEME.DARK,
+    },
+  };
 
-  tonConnectUI.value.onStatusChange((walletAndwalletInfo: any) => {
-    console.log(walletAndwalletInfo);
+  tonConnectUI.value.onStatusChange(() => {
     isWalletConnected.value = true;
   });
-}
+};
 
 const connectTonWallet = async () => {
   await tonConnectUI.value.openModal();

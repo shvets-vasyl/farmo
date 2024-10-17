@@ -43,7 +43,6 @@ export default defineNuxtConfig({
 	},
 
 	runtimeConfig: {
-		PROJECT_ID: process.env.PROJECT_ID,
     public: {
       SITE_URL: process.env.SITE_URL,
 			PROJECT_ID: process.env.PROJECT_ID,
