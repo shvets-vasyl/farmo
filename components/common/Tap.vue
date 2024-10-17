@@ -98,7 +98,7 @@ const onPress = (event: MouseEvent) => {
   tap.appendChild(tapElement);
 
   if (navigator.vibrate) {
-    navigator.vibrate(200);
+    navigator.vibrate(50);
   }
 
   // animation

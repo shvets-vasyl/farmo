@@ -95,18 +95,8 @@
 				</div>
 			</button> -->
       <div class="profile__wallet-options">
-        <button
-          class="profile__wallet-option"
-          @click="connectTonWallet"
-          :class="{ _connected: isWalletConnected }"
-        >
-          <IconsTon />
-          <div class="t1">TON</div>
-        </button>
-        <button class="profile__wallet-option" @click="connectOtherWallet">
-          <IconsEthereum />
-          <div class="t1">Ethereum</div>
-        </button>
+				<CommonTonButton />
+        <CommonConnectWalletButton />
       </div>
     </div>
 
@@ -125,11 +115,6 @@
 import { Form } from "vee-validate";
 import * as Yup from "yup";
 import type { ProfileValues } from "@/types/forms";
-import { TonConnectUI, THEME } from "@tonconnect/ui";
-import { useAppKit } from "@reown/appkit/vue";
-
-const modal = useAppKit();
-const { SITE_URL } = useRuntimeConfig().public;
 
 const messages = reactive({
   ava: "",
@@ -137,10 +122,6 @@ const messages = reactive({
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const MAX_WIDTH = 500;
 const MAX_HEIGHT = 500;
-
-onMounted(() => {
-  initTonWallet();
-});
 
 const pickPhoto = () => {
   const fileInput = document.querySelector(
@@ -184,31 +165,6 @@ const onChangeInputFile = (event: Event): void => {
 
 const onSubmit = async (values: ProfileValues) => {
   console.log(values);
-};
-
-const tonConnectUI = ref();
-const isWalletConnected = ref(false);
-
-const initTonWallet = () => {
-  tonConnectUI.value = new TonConnectUI({
-    manifestUrl: `${SITE_URL}/tonconnect-manifest.json`,
-  });
-  tonConnectUI.value.uiOptions = {
-    uiPreferences: {
-      theme: THEME.DARK,
-    },
-  };
-
-  tonConnectUI.value.onStatusChange(() => {
-    isWalletConnected.value = true;
-  });
-};
-
-const connectTonWallet = async () => {
-  await tonConnectUI.value.openModal();
-};
-const connectOtherWallet = async () => {
-  await modal.open();
 };
 
 const formSchema = Yup.object().shape({
@@ -314,17 +270,5 @@ const formSchema = Yup.object().shape({
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: rem(24);
-}
-.profile__wallet-option {
-  height: rem(57);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: rem(8);
-  border-radius: rem(12);
-  border: 1px solid var(--c-grey-5);
-}
-.profile__wallet-option._connected {
-  border-color: var(--c-red);
 }
 </style>
