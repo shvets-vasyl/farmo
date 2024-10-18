@@ -14,19 +14,7 @@
     <div class="cover__descr t1">Panda Kombat</div>
   </div>
 </template>
-<script lang="ts" setup>
-import { gsap } from "gsap"
-onMounted(() => {
-	// fake loading
-	gsap.to(".cover", {
-		opacity: 0,
-		delay: 1,
-		onComplete() {
-			store.loading = false
-		}
-	})
-})
-</script>
+<script lang="ts" setup></script>
 <style lang="scss" scoped>
 .cover {
   background: #4d4d4d;
