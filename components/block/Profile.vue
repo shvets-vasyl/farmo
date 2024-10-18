@@ -5,14 +5,14 @@
     <div class="profile__wrap">
       <div
         class="profile__ava"
-        :class="{ '_without-ava-photo': store.user.ava_photo === undefined }"
+        :class="{ '_without-ava-photo': !store.user.profile?.photo }"
         @click="pickPhoto"
       >
         <div class="profile__ava-media">
-          <IconsLogo v-if="store.user.ava_photo === undefined" />
+          <IconsLogo v-if="!store.user.profile?.photo" />
           <img
             v-else
-            :src="store.user.ava_photo"
+            :src="store.user.profile.photo"
             class="common-media"
             alt="ava photo"
           />
@@ -35,10 +35,10 @@
       </div>
 
       <div class="profile__name">
-        {{ store.user.name }}
+        {{ store.user.profile?.first_name }}
       </div>
-      <div class="profile__last-name h5">
-        {{ store.user.last_name }}
+      <div v-if="store.user.profile?.last_name" class="profile__last-name h5">
+        {{ store.user.profile?.last_name }}
       </div>
 
       <Form
@@ -49,7 +49,7 @@
         <div class="form__fields">
           <CommonInput
             class="form__field"
-            placeholder="Phone"
+            :placeholder="store.user.profile?.phone_number.replace(/^\+/, '') || ''"
             type="text"
             name="phone"
             label="Phone Number"
@@ -57,7 +57,9 @@
 
           <CommonInput
             class="form__field"
-            placeholder="Age"
+            :placeholder="`${
+              store.user.profile?.age !== -1 ? store.user.profile?.age : ''
+            }`"
             type="text"
             name="age"
             label="Your Age"
@@ -65,7 +67,7 @@
 
           <CommonInput
             class="form__field"
-            placeholder="Country"
+            :placeholder="store.user.profile?.country || ''"
             type="text"
             name="country"
             label="Country"
@@ -73,7 +75,7 @@
 
           <CommonInput
             class="form__field"
-            placeholder="Region"
+            :placeholder="store.user.profile?.region || ''"
             type="text"
             name="region"
             label="Region"
@@ -95,7 +97,7 @@
 				</div>
 			</button> -->
       <div class="profile__wallet-options">
-				<CommonTonButton />
+        <CommonTonButton />
         <CommonConnectWalletButton />
       </div>
     </div>
@@ -112,6 +114,7 @@
 </template>
 
 <script lang="ts" setup>
+import { store } from "@/store";
 import { Form } from "vee-validate";
 import * as Yup from "yup";
 import type { ProfileValues } from "@/types/forms";
@@ -135,7 +138,6 @@ const onChangeInputFile = (event: Event): void => {
   const file = input?.files ? input.files[0] : null;
 
   if (file) {
-    // Check file size
     if (file.size > MAX_FILE_SIZE) {
       messages.ava = "The file exceeds the maximum size of 5 MB.";
       return;
@@ -147,15 +149,15 @@ const onChangeInputFile = (event: Event): void => {
       img.src = e.target?.result as string;
 
       img.onload = () => {
-        // Check dimensions
         if (img.width > MAX_WIDTH || img.height > MAX_HEIGHT) {
           messages.ava =
             "The image exceeds the maximum dimensions of 500x500 pixels.";
           return;
         }
 
-        // If all checks pass, update the avatar photo
-        store.user.ava_photo = img.src;
+				if (store.user.profile) {
+					store.user.profile.photo = img.src;
+				}
       };
     };
 
@@ -164,17 +166,33 @@ const onChangeInputFile = (event: Event): void => {
 };
 
 const onSubmit = async (values: ProfileValues) => {
-  console.log(values);
+  try {
+    const response = await $fetch("/api/update-profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: store.user.profile?.user_id,
+        age: values.age,
+        country: values.country,
+        region: values.region,
+      }),
+    });
+
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const formSchema = Yup.object().shape({
   phone: Yup.string()
-    .required("Is a required field")
     .min(10, "Must be at least 10 characters")
     .max(15, "Must be at most 15 characters"),
-  age: Yup.string().required("Is a required field"),
-  country: Yup.string().required("Is a required field"),
-  region: Yup.string().required("Is a required field"),
+  age: Yup.string(),
+  country: Yup.string(),
+  region: Yup.string(),
 });
 </script>
 
@@ -206,6 +224,9 @@ const formSchema = Yup.object().shape({
 .profile__ava._without-ava-photo {
   padding: rem(20) rem(16) rem(16);
 }
+.profile__ava._without-ava-photo .profile__ava-media {
+  overflow: visible;
+}
 .profile__ava-edit {
   position: absolute;
   width: rem(31);
@@ -235,11 +256,11 @@ const formSchema = Yup.object().shape({
   font-size: rem(20);
   font-family: var(--font-700);
   text-align: center;
-  margin-bottom: rem(4);
 }
 .profile__last-name {
   text-align: center;
   opacity: 0.7;
+  margin-top: rem(4);
 }
 .profile__form {
   width: 100%;

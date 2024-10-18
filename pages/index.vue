@@ -5,8 +5,8 @@
         <TheCover v-if="store.loading" />
         <TemplateShadow />
 
+				{{ USER_ID }}
 
-				<!-- <div class="h1 test">{{ user }}</div> -->
         <TheHeader
           :class="store.show_block === 'main' ? 'show-block' : 'hide-block'"
         />
@@ -26,39 +26,38 @@
 </template>
 
 <script lang="ts" setup>
-const user = ref();
+import { store } from "@/store";
+import type { UserProfileInterface, UserInfoInterface } from "@/types/common"
 
-onMounted(() => {
-  // Перевірка наявності Web App Telegram API
-	console.log(window.Telegram?.WebApp);
+const USER_ID = window.Telegram.WebApp.initDataUnsafe.user.user_id;
 
-	// const tg = window.Telegram?.WebApp
+const USER_PROFILE = await $fetch<UserProfileInterface>("/api/user-profile", {
+	method: "POST",
+	body: JSON.stringify({ id: USER_ID }),
+})
 
-  // if (tg) {
-  //   user.value = tg.initDataUnsafe?.user || null;
-  // }
-	// console.log(user.value.id);
-	// console.log(user.value.first_name);
-	// console.log(user.value.last_name);
-	// console.log(user.value.username);
+if (USER_PROFILE.status === "error") {
+  throw createError({
+    statusCode: 500,
+    statusMessage: "Error Getting Data",
+    fatal: true,
+  })
+}
 
-	const resp = $fetch("/api/profile").then((response) => {
-		console.log(response);
+const USER_INFO = await $fetch<UserInfoInterface>("/api/user-info", {
+	method: "POST",
+	body: JSON.stringify({ id: USER_ID }),
+})
 
-	})
 
-
-});
+store.user.profile = USER_PROFILE
+store.user.info = USER_INFO
 </script>
 
 <style lang="scss" scoped>
 .main {
   overflow: hidden;
   height: 100vh;
-}
-.test {
-	position: relative;
-	z-index: 10;
 }
 .show-block {
   pointer-events: auto;

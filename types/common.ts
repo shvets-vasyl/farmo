@@ -27,9 +27,29 @@ export interface Store {
 		dignity: DignityNames;
 	};
 	user: {
-		name: string
-		last_name: string
-		ava_photo: string | undefined
+		profile: UserProfileInterface | null
+		info: UserInfoInterface | null
 	};
 	days_in_game: number;
 }
+
+export interface UserProfileInterface {
+	age: number,
+	country: string
+	first_name: string
+	is_ban: boolean
+	last_name: string | null
+	phone_number: string
+	region: string
+	user_id: number
+	username: string
+	photo: string | null
+}
+
+export interface UserInfoInterface {
+	balance: number,
+	clicks_days: number
+	lvl: number
+	lvl_name: string
+}
+

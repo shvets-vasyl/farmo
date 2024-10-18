@@ -10,23 +10,11 @@
 </template>
 
 <script lang="ts" setup>
-import { useAppKit, useAppKitAccount, useWalletInfo } from "@reown/appkit/vue";
+import { useAppKit } from "@reown/appkit/vue";
 
 const modal = useAppKit();
 
 const isWalletConnected = ref(false)
-
-onMounted(() => {
-	const { walletInfo } = useWalletInfo()
-
-	const { isConnected } = useAppKitAccount()
-	console.log(isConnected);
-	console.log('ok');
-
-
-
-  console.log(walletInfo.name, walletInfo.icon)
-})
 
 const connectOtherWallet = async () => {
   await modal.open();

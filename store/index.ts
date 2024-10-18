@@ -26,9 +26,8 @@ export const store = reactive<Store>({
     dignity: "Bronze",
   },
 	user: {
-		name: "Nick Name",
-		last_name: "Last Name",
-		ava_photo: "/ava.jpeg",
+		profile: null,
+		info: null,
 	},
   days_in_game: 2,
 });

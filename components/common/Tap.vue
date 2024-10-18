@@ -57,10 +57,12 @@
 </template>
 
 <script lang="ts" setup>
+import { store } from "@/store";
 import type { DignityNames, Levels } from "@/types/common";
 import { gsap } from "gsap";
 
-const onPress = (event: MouseEvent) => {
+const onPress = async (event: MouseEvent) => {
+
   store.coins += 1;
 
   const circle2 = document.querySelector(".tap__circle2");
@@ -134,6 +136,8 @@ const onPress = (event: MouseEvent) => {
 		delay: 0.1,
     ease: "power1.out",
   }, 0);
+
+	updateBalance()
 };
 
 const levelUp = (level: Levels, dignity: DignityNames) => {
@@ -158,6 +162,23 @@ const setPercent = () => {
 
   store.progress.percent += 100 / getDifference;
 };
+
+const updateBalance = async () => {
+	try {
+		const response = await $fetch("/api/update-balance", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				user_id: store.user.profile?.user_id,
+			}),
+		});
+		console.log(response);
+	} catch (error) {
+		console.error(error);
+	}
+}
 
 watch(
   () => store.coins,
