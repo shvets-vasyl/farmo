@@ -3,7 +3,7 @@
     <ClientOnly>
       <main class="error">
 				<div class="h2">Error Getting Data</div>
-				<div class="h2">Please Try Later</div>
+				<div class="h3">Please Close and Open Again</div>
 			</main>
 		</ClientOnly>
 	</div>

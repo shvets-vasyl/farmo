@@ -1,7 +1,7 @@
 interface TelegramWebApp {
   initDataUnsafe: {
     user: {
-      user_id: string;
+      id: string;
     };
   };
 }
