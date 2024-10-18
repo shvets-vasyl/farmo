@@ -3,7 +3,7 @@
     <div class="progress__head">
       <div class="progress__dignity">
         <span class="progress__dignity-text t1">
-          {{ store.progress.dignity }}
+          {{ store.user.info?.lvl_name }}
         </span>
         <span class="progress__dignity-icon">
           <IconsArrowRight />
@@ -13,7 +13,7 @@
       <div class="progress__level t1">
         <span class="progress__level-text">Level</span>
         <span class="progress__level-count">
-          {{ store.progress.level }}/10
+          {{ store.user.info?.lvl }}/10
         </span>
       </div>
     </div>
@@ -26,7 +26,9 @@
     </div>
   </div>
 </template>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { store } from "@/store";
+</script>
 <style lang="scss" scoped>
 .progress {
   margin-top: rem(12);
