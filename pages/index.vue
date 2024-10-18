@@ -5,7 +5,10 @@
         <TheCover v-if="store.loading" />
         <TemplateShadow />
 
-				{{ test }}
+
+				<div class="testing">
+					{{ test }}
+				</div>
 
         <TheHeader
           :class="store.show_block === 'main' ? 'show-block' : 'hide-block'"
@@ -69,6 +72,10 @@ onMounted(async () => {
 .main {
   overflow: hidden;
   height: 100vh;
+}
+.testing {
+	position: relative;
+	z-index: 1000;
 }
 .show-block {
   pointer-events: auto;
