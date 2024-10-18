@@ -5,8 +5,6 @@
         <TheCover v-if="store.loading" />
         <TemplateShadow />
 
-				{{ USER_ID }}
-
         <TheHeader
           :class="store.show_block === 'main' ? 'show-block' : 'hide-block'"
         />
@@ -29,29 +27,31 @@
 import { store } from "@/store";
 import type { UserProfileInterface, UserInfoInterface } from "@/types/common"
 
-const USER_ID = window.Telegram.WebApp.initDataUnsafe.user.user_id;
+onMounted(async () => {
+	const USER_ID = window.Telegram.WebApp.initDataUnsafe.user.user_id;
 
-const USER_PROFILE = await $fetch<UserProfileInterface>("/api/user-profile", {
-	method: "POST",
-	body: JSON.stringify({ id: USER_ID }),
-})
+  if (USER_ID) {
+		const USER_PROFILE = await $fetch<UserProfileInterface>("/api/user-profile", {
+			method: "POST",
+			body: JSON.stringify({ id: USER_ID }),
+		})
 
-if (USER_PROFILE.status === "error") {
-  throw createError({
-    statusCode: 500,
-    statusMessage: "Error Getting Data",
-    fatal: true,
-  })
-}
+		const USER_INFO = await $fetch<UserInfoInterface>("/api/user-info", {
+			method: "POST",
+			body: JSON.stringify({ id: USER_ID }),
+		})
 
-const USER_INFO = await $fetch<UserInfoInterface>("/api/user-info", {
-	method: "POST",
-	body: JSON.stringify({ id: USER_ID }),
-})
+		store.user.profile = USER_PROFILE
+		store.user.info = USER_INFO
+	} else {
+		throw createError({
+			statusCode: 500,
+			statusMessage: "Error Getting Data",
+			fatal: true,
+		})
+	}
 
-
-store.user.profile = USER_PROFILE
-store.user.info = USER_INFO
+});
 </script>
 
 <style lang="scss" scoped>
