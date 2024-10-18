@@ -4,6 +4,9 @@
       <main class="main">
         <TheCover v-if="store.loading" />
         <TemplateShadow />
+
+
+				<div class="h1 test">{{ user }}</div>
         <TheHeader
           :class="store.show_block === 'main' ? 'show-block' : 'hide-block'"
         />
@@ -22,12 +25,31 @@
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const user = ref();
+
+onMounted(() => {
+  // Перевірка наявності Web App Telegram API
+	console.log(window.Telegram?.WebApp);
+
+	const tg = window.Telegram?.WebApp
+
+  if (tg) {
+    user.value = tg.initDataUnsafe?.user || null;
+  }
+	console.log(user.value);
+
+});
+</script>
 
 <style lang="scss" scoped>
 .main {
   overflow: hidden;
   height: 100vh;
+}
+.test {
+	position: relative;
+	z-index: 10;
 }
 .show-block {
   pointer-events: auto;

@@ -59,7 +59,6 @@
 <script lang="ts" setup>
 import type { DignityNames, Levels } from "@/types/common";
 import { gsap } from "gsap";
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 const onPress = (event: MouseEvent) => {
   store.coins += 1;
