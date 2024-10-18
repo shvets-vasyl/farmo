@@ -6,7 +6,10 @@
       <div class="header__profile-name">
         <div class="header__icon-logo">
           <div class="header__btn-bg" />
-          <div class="header__icon-logo-wrap">
+					<div v-if="store.user.ava_photo" class="header__icon-photo-wrap">
+						<img :src="store.user.ava_photo" class="common-media" alt="" />
+					</div>
+          <div v-else class="header__icon-logo-wrap">
             <IconsLogo />
           </div>
         </div>
@@ -55,6 +58,8 @@
   align-items: center;
   justify-content: center;
   position: relative;
+	border-radius: rem(10);
+	overflow: hidden;
 }
 .header__icon-logo-wrap {
   flex: 0 0 rem(19);

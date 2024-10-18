@@ -6,7 +6,7 @@
         <TemplateShadow />
 
 
-				<div class="h1 test">{{ user }}</div>
+				<!-- <div class="h1 test">{{ user }}</div> -->
         <TheHeader
           :class="store.show_block === 'main' ? 'show-block' : 'hide-block'"
         />
@@ -32,12 +32,21 @@ onMounted(() => {
   // Перевірка наявності Web App Telegram API
 	console.log(window.Telegram?.WebApp);
 
-	const tg = window.Telegram?.WebApp
+	// const tg = window.Telegram?.WebApp
 
-  if (tg) {
-    user.value = tg.initDataUnsafe?.user || null;
-  }
-	console.log(user.value);
+  // if (tg) {
+  //   user.value = tg.initDataUnsafe?.user || null;
+  // }
+	// console.log(user.value.id);
+	// console.log(user.value.first_name);
+	// console.log(user.value.last_name);
+	// console.log(user.value.username);
+
+	const resp = $fetch("/api/profile").then((response) => {
+		console.log(response);
+
+	})
+
 
 });
 </script>
