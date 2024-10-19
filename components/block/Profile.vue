@@ -55,7 +55,6 @@
             class="form__field"
             name="age"
             label="Your Age"
-            type="number"
             v-model="formValues.age"
           />
 

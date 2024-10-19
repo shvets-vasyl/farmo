@@ -62,8 +62,11 @@ import type { DignityNames, Levels } from "@/types/common";
 import { gsap } from "gsap";
 
 const onPress = async (event: MouseEvent) => {
+	if (store.user.info) {
+		store.user.info.balance += 1
+	}
 
-  store.coins += 1;
+	store.coins =+ 1
 
   const circle2 = document.querySelector(".tap__circle2");
   const tap = document.querySelector(".tap");
@@ -98,11 +101,6 @@ const onPress = async (event: MouseEvent) => {
   tapElement.style.top = `${y}px`;
 
   tap.appendChild(tapElement);
-
-
-  if (navigator.vibrate) {
-    navigator.vibrate(2000);
-  }
 
   // animation
   const tl = gsap.timeline();
@@ -173,10 +171,6 @@ const updateBalance = async () => {
 			body: JSON.stringify({
 				user_id: store.user.profile?.user_id,
 			}),
-		}).then(() => {
-			if (store.user.info) {
-				store.user.info.balance += 1
-			}
 		})
 
 		console.log(response);
