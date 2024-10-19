@@ -4,6 +4,8 @@
       <main class="main">
         <TheCover v-if="store.loading" />
 
+
+
 				<!-- <template v-else>
 					<TemplateShadow />
 
@@ -31,6 +33,7 @@ import { store } from "@/store";
 import type { UserProfileInterface, UserInfoInterface } from "@/types/common";
 import { gsap } from "gsap"
 
+
 onMounted(async () => {
 
 	// gsap.to(".cover", {
@@ -42,24 +45,17 @@ onMounted(async () => {
 	// 	})
 
   // Додаємо затримку перед отриманням даних
-  const storedUserInfo = localStorage.getItem('userInfo');
+  const STORAGE_USER_ID = localStorage.getItem('userId');
 
-  if (storedUserInfo) {
-    alert("User info from local storage: " + storedUserInfo);
+  if (STORAGE_USER_ID) {
+    alert("User info from local storage: " + STORAGE_USER_ID);
   } else {
-    setTimeout(() => {
-      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
-        const userInfo = window.Telegram.WebApp.initDataUnsafe.user;
-        if (userInfo) {
-          localStorage.setItem('userInfo', JSON.stringify(userInfo));
-          alert(JSON.stringify(userInfo));
-        } else {
-          alert("User info is undefined");
-        }
-      } else {
-        alert("Telegram WebApp is not initialized yet");
-      }
-    }, 1000);
+		if (!window.Telegram) return
+
+		const USER_ID = window.Telegram.WebApp.initDataUnsafe.user.id;
+
+		localStorage.setItem('userId', USER_ID);
+		alert(JSON.stringify(USER_ID));
   }
   // if (!window.Telegram) return;
 
