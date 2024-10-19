@@ -4,6 +4,11 @@
       <main class="main">
         <TheCover v-if="store.loading" />
 
+				<div v-else>
+					{{ test }}
+				</div>
+
+
 				<!-- <template v-else>
 					<TemplateShadow />
 
@@ -31,7 +36,10 @@ import { store } from "@/store";
 import type { UserProfileInterface, UserInfoInterface } from "@/types/common";
 import { gsap } from "gsap"
 
+const test = ref()
+
 onMounted(async () => {
+	setTimeout(() => {
 
 	gsap.to(".cover", {
 			opacity: 0,
@@ -41,7 +49,8 @@ onMounted(async () => {
 			}
 		})
 
-	alert(window.Telegram)
+	test.value = window.Telegram
+}, 5000)
   // if (!window.Telegram) return;
 
   // const USER_ID = window.Telegram.WebApp.initDataUnsafe.user.id;
