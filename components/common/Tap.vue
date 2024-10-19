@@ -59,14 +59,13 @@
 <script lang="ts" setup>
 import { store } from "@/store";
 import type { DignityNames, Levels } from "@/types/common";
+import { paths } from "@/utils/api/paths"
 import { gsap } from "gsap";
 
 const onPress = async (event: MouseEvent) => {
 	if (store.user.info) {
 		store.user.info.balance += 1
 	}
-
-	store.coins =+ 1
 
   const circle2 = document.querySelector(".tap__circle2");
   const tap = document.querySelector(".tap");
@@ -163,12 +162,13 @@ const setPercent = () => {
 
 const updateBalance = async () => {
 	try {
-		const response = await $fetch("/api/update-balance", {
+		const response = await $fetch("/api/user-update", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
+				path: paths.game_tap,
 				user_id: store.user.profile?.user_id,
 			}),
 		})
@@ -180,7 +180,7 @@ const updateBalance = async () => {
 }
 
 watch(
-  () => store.coins,
+  () => store.user.info?.balance,
   (count) => {
     if (store.progress.level === store.all_levels[store.all_levels.length - 1])
       return;

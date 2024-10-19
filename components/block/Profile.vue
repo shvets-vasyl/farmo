@@ -110,6 +110,8 @@
 
 <script lang="ts" setup>
 import { store } from "@/store";
+import { paths } from "@/utils/api/paths"
+import type { ApiResponseInterface } from "@/types/common"
 
 const messages = reactive({
   ava: "",
@@ -169,19 +171,16 @@ const onChangeInputFile = (event: Event): void => {
 
 const onSubmit = async () => {
   try {
-    const response = await $fetch<{
-			message?: string
-			status: string
-		}>("/api/update-profile", {
+    const response = await $fetch<ApiResponseInterface>("/api/user-update", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_id: store.user.profile?.user_id,
-        age: formValues.age,
-        country: formValues.country,
-        region: formValues.region,
+				path: `${paths.user_edit}/${store.user.profile?.user_id}`,
+        age: Number(formValues.age) || "",
+        country: formValues.country || "",
+        region: formValues.region || "",
       }),
     });
 

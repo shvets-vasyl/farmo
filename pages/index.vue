@@ -33,31 +33,29 @@
 <script lang="ts" setup>
 import { store } from "@/store";
 import type { UserProfileInterface, UserInfoInterface } from "@/types/common";
+import { paths } from "@/utils/api/paths"
 import { gsap } from "gsap";
 
 onMounted(async () => {
   let userId = localStorage.getItem("userId");
 
   if (!userId && window.Telegram) {
-		const id = window.Telegram.WebApp.initDataUnsafe.user.id
-		// const id = "992580016"
+    const id = window.Telegram.WebApp.initDataUnsafe.user.id
+    // const id = "992580016";
 
     localStorage.setItem("userId", id);
     userId = id;
   }
 
   try {
-    const USER_PROFILE = await $fetch<UserProfileInterface>(
-      "/api/user-profile",
-      {
-        method: "POST",
-        body: JSON.stringify({ id: userId }),
-      }
-    );
-
-    const USER_INFO = await $fetch<UserInfoInterface>("/api/user-info", {
+    const USER_PROFILE = await $fetch<UserProfileInterface>("/api/user-data", {
       method: "POST",
-      body: JSON.stringify({ id: userId }),
+      body: JSON.stringify({ id: userId, path: paths.profile }),
+    });
+
+    const USER_INFO = await $fetch<UserInfoInterface>("/api/user-data", {
+      method: "POST",
+      body: JSON.stringify({ id: userId, path: paths.game_info }),
     });
 
     store.user.profile = USER_PROFILE;
@@ -73,7 +71,6 @@ onMounted(async () => {
       },
     });
   }
-
 });
 </script>
 
