@@ -21,9 +21,6 @@ const USER_ID3 = ref()
 const USER_ID4 = ref()
 onMounted(() => {
 	USER_ID1.value = window.Telegram;
-	USER_ID2.value = window.Telegram.WebApp;
-	USER_ID3.value = window.Telegram.WebApp.initDataUnsafe;
-	USER_ID4.value = window.Telegram.WebApp.initDataUnsafe.user;
 })
 
 </script>
