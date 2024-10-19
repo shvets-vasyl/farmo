@@ -4,7 +4,9 @@
       <main class="main">
         <TheCover v-if="store.loading" />
 
-				<template v-else>
+				{{ test }}
+
+				<!-- <template v-else>
 					<TemplateShadow />
 
 					<TheHeader
@@ -20,7 +22,7 @@
 						:class="store.show_block === 'friends' ? 'show-block' : 'hide-block'"
 					/>
 					<CommonTabs />
-				</template>
+				</template> -->
       </main>
     </ClientOnly>
   </div>
@@ -31,37 +33,48 @@ import { store } from "@/store";
 import type { UserProfileInterface, UserInfoInterface } from "@/types/common";
 import { gsap } from "gsap"
 
+const test = ref()
+
 onMounted(async () => {
-  if (!window.Telegram) return;
-
-  const USER_ID = window.Telegram.WebApp.initDataUnsafe.user.id;
-  // const USER_ID = 992580016;
-
-  try {
-    const USER_PROFILE = await $fetch<UserProfileInterface>("/api/user-profile", {
-      method: "POST",
-      body: JSON.stringify({ id: USER_ID }),
-    });
-
-    const USER_INFO = await $fetch<UserInfoInterface>("/api/user-info", {
-      method: "POST",
-      body: JSON.stringify({ id: USER_ID }),
-    });
-
-    store.user.profile = USER_PROFILE;
-    store.user.info = USER_INFO;
-
-  } catch (error) {
-    console.error("Error fetching user data:", error);
-  } finally {
-		gsap.to(".cover", {
+	gsap.to(".cover", {
 			opacity: 0,
 			delay: 0.5,
 			onComplete() {
 				store.loading = false
 			}
 		})
-  }
+
+	test.value = window
+  // if (!window.Telegram) return;
+
+  // const USER_ID = window.Telegram.WebApp.initDataUnsafe.user.id;
+  // // const USER_ID = 992580016;
+
+  // try {
+  //   const USER_PROFILE = await $fetch<UserProfileInterface>("/api/user-profile", {
+  //     method: "POST",
+  //     body: JSON.stringify({ id: USER_ID }),
+  //   });
+
+  //   const USER_INFO = await $fetch<UserInfoInterface>("/api/user-info", {
+  //     method: "POST",
+  //     body: JSON.stringify({ id: USER_ID }),
+  //   });
+
+  //   store.user.profile = USER_PROFILE;
+  //   store.user.info = USER_INFO;
+
+  // } catch (error) {
+  //   console.error("Error fetching user data:", error);
+  // } finally {
+	// 	gsap.to(".cover", {
+	// 		opacity: 0,
+	// 		delay: 0.5,
+	// 		onComplete() {
+	// 			store.loading = false
+	// 		}
+	// 	})
+  // }
 });
 </script>
 
