@@ -173,7 +173,12 @@ const updateBalance = async () => {
 			body: JSON.stringify({
 				user_id: store.user.profile?.user_id,
 			}),
-		});
+		}).then(() => {
+			if (store.user.info) {
+				store.user.info.balance += 1
+			}
+		})
+
 		console.log(response);
 	} catch (error) {
 		console.error(error);

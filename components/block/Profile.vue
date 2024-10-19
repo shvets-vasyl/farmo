@@ -41,61 +41,57 @@
         {{ store.user.profile?.last_name }}
       </div>
 
-      <Form
-        class="profile__form"
-        :validation-schema="formSchema"
-        @submit="onSubmit"
-      >
+      <form class="profile__form" @submit.prevent="onSubmit">
         <div class="form__fields">
           <CommonInput
             class="form__field"
-            :placeholder="store.user.profile?.phone_number.replace(/^\+/, '') || ''"
-            type="text"
             name="phone"
             label="Phone Number"
+            :readonly="true"
+            v-model="formValues.phone"
           />
 
           <CommonInput
             class="form__field"
-            :placeholder="`${
-              store.user.profile?.age !== -1 ? store.user.profile?.age : ''
-            }`"
-            type="text"
             name="age"
             label="Your Age"
+            type="number"
+            v-model="formValues.age"
           />
 
           <CommonInput
             class="form__field"
-            :placeholder="store.user.profile?.country || ''"
-            type="text"
+            :placeholder="formValues.country"
             name="country"
             label="Country"
+            v-model="formValues.country"
           />
 
           <CommonInput
             class="form__field"
-            :placeholder="store.user.profile?.region || ''"
-            type="text"
+            :placeholder="formValues.region"
             name="region"
             label="Region"
+            v-model="formValues.region"
           />
         </div>
 
         <div class="form__btn">
           <CommonButton type="submit" :is-red="true"> Save </CommonButton>
         </div>
-      </Form>
+
+        <div class="form__error">
+          <CommonMessage
+            v-if="messages.validation"
+            :text="messages.validation"
+						:status="messages.status"
+          />
+        </div>
+      </form>
     </div>
 
     <div class="profile__wallet">
       <div class="profile__wallet-title t1">Wallet</div>
-      <!-- <button class="profile__wallet-add">
-				<IconsInvite />
-				<div class="t1">
-					Connect
-				</div>
-			</button> -->
       <div class="profile__wallet-options">
         <CommonTonButton />
         <CommonConnectWalletButton />
@@ -115,16 +111,23 @@
 
 <script lang="ts" setup>
 import { store } from "@/store";
-import { Form } from "vee-validate";
-import * as Yup from "yup";
-import type { ProfileValues } from "@/types/forms";
 
 const messages = reactive({
   ava: "",
+  validation: "",
+	status: ""
 });
+
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const MAX_WIDTH = 500;
 const MAX_HEIGHT = 500;
+
+const formValues = reactive({
+  phone: store.user.profile?.phone_number || "",
+  age: store.user.profile?.age !== -1 ? store.user.profile?.age + "" : "",
+  country: store.user.profile?.country || "",
+  region: store.user.profile?.region || "",
+});
 
 const pickPhoto = () => {
   const fileInput = document.querySelector(
@@ -155,9 +158,9 @@ const onChangeInputFile = (event: Event): void => {
           return;
         }
 
-				if (store.user.profile) {
-					store.user.profile.photo = img.src;
-				}
+        if (store.user.profile) {
+          store.user.profile.photo = img.src;
+        }
       };
     };
 
@@ -165,35 +168,35 @@ const onChangeInputFile = (event: Event): void => {
   }
 };
 
-const onSubmit = async (values: ProfileValues) => {
+const onSubmit = async () => {
   try {
-    const response = await $fetch("/api/update-profile", {
+    const response = await $fetch<{
+			message?: string
+			status: string
+		}>("/api/update-profile", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         user_id: store.user.profile?.user_id,
-        age: values.age,
-        country: values.country,
-        region: values.region,
+        age: formValues.age,
+        country: formValues.country,
+        region: formValues.region,
       }),
     });
 
-    console.log(response);
+		messages.status = response.status;
+
+    if (response.message) {
+      messages.validation = response.message;
+    } else {
+      messages.validation = "Profile updated successfully";
+    }
   } catch (error) {
-    console.error(error);
+    console.error("An error occurred:", error);
   }
 };
-
-const formSchema = Yup.object().shape({
-  phone: Yup.string()
-    .min(10, "Must be at least 10 characters")
-    .max(15, "Must be at most 15 characters"),
-  age: Yup.string(),
-  country: Yup.string(),
-  region: Yup.string(),
-});
 </script>
 
 <style lang="scss" scoped>
@@ -280,16 +283,15 @@ const formSchema = Yup.object().shape({
   padding-right: rem(26);
   margin-top: rem(24);
 }
-.profile__wallet-add {
-  display: flex;
-  align-items: center;
-  gap: rem(8);
-  margin-top: rem(24);
-}
 .profile__wallet-options {
   margin-top: rem(24);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: rem(24);
+}
+.form__error {
+  padding-left: rem(26);
+  padding-right: rem(26);
+  margin-top: rem(8);
 }
 </style>

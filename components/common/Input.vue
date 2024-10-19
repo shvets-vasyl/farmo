@@ -1,89 +1,44 @@
 <template>
-  <div
-    class="input__field"
-    :class="{
-      '_with-icons': with_icons,
-      '_error': !!errorMessage,
-      success: meta.valid,
-    }"
-  >
-    <label v-if="label" :for="name" class="t1 input__label">{{ label }}</label>
+  <div class="input__field">
+		<label v-if="label" :for="name" class="t1 input__label">{{ label }}</label>
     <input
-      class="input"
-      ref="inputRef"
-      :placeholder="placeholder"
+			class="input"
+			:placeholder="placeholder"
       :type="type"
       :name="name"
-      :value="inputValue"
       :autocomplete="name"
-      @input="handleInputFunc"
-      @blur="handleBlur"
+      :readonly="readonly"
+			:value="modelValue"
+      @input="updateValue"
     />
-
-    <p class="input__message t1" v-show="errorMessage || meta.valid">
-      {{ errorMessage }}
-    </p>
-
-    <div v-if="with_icons" class="input__icons">
-      <IconsMail v-if="name === 'email'" />
-      <IconsPhone v-if="name === 'phone'" />
-      <IconsPassword v-if="name === 'password'" />
-      <div
-        v-if="name === 'password'"
-        class="input__btn-show-pass"
-        @click="togglePasswordVisibility"
-      >
-        <IconsEye />
-      </div>
-    </div>
   </div>
 </template>
-
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { useField } from 'vee-validate';
-
 interface Props {
-  placeholder: string;
-  type: string;
   name: string;
+	type?: string;
+	placeholder?: string;
+  readonly?: boolean;
   label?: string;
-  value?: string;
-  with_icons?: boolean;
+	modelValue: string;
 }
 
-const props = defineProps<Props>();
-const { name, value: initialValue, placeholder, type, label, with_icons } = props;
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: "",
+	placeholder: "",
+	readonly: false,
+	label: "",
+	type: "text",
+})
+const { modelValue, type, name, placeholder, readonly, label } = toRefs(props)
 
-const inputRef = ref<HTMLInputElement | null>(null);
+const emit = defineEmits(['update:modelValue']);
 
-const {
-  value: inputValue,
-  errorMessage,
-  handleBlur,
-  handleChange,
-  meta,
-} = useField(name, { initialValue });
-
-const handleInputFunc = (e: Event) => {
-  const target = e.target as HTMLInputElement;
-
-  if (name === 'phone') {
-    formatPhone(target);
+const updateValue = (event: Event) => {
+  const target = event.target as HTMLInputElement | null;
+  if (target) {
+    emit('update:modelValue', target.value);
   }
-
-  handleChange(e);
-};
-
-const togglePasswordVisibility = (e: MouseEvent): void => {
-  const passwordInput = inputRef.value;
-  if (passwordInput) {
-    passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
-  }
-};
-
-const formatPhone = (input: HTMLInputElement): void => {
-  input.value = input.value.replace(/\D/g, '');
 };
 </script>
 
@@ -102,18 +57,15 @@ const formatPhone = (input: HTMLInputElement): void => {
   padding: 0 rem(13);
   transition: all 0.5s var(--default-ease);
 }
-.input__field._error .input {
-  border-color: var(--c-red);
-}
-.input__field._with-icons .input {
-  padding-left: rem(50);
-}
-.input__field._with-icons .input[name="phone"] {
-  padding-right: rem(50);
+.input:read-only {
+  opacity: 0.4;
 }
 .input:focus {
   border-color: var(--c-white);
   color: var(--c-white);
+}
+.input:read-only:focus {
+  border-color: var(--c-grey-5);
 }
 .input::placeholder {
   font-size: rem(15);
@@ -123,26 +75,5 @@ const formatPhone = (input: HTMLInputElement): void => {
 .input__label {
   margin-bottom: rem(10);
   display: block;
-}
-.input__icons {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: rem(49);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 rem(16);
-  pointer-events: none;
-}
-.input__btn-show-pass {
-  position: relative;
-  top: rem(3);
-  pointer-events: auto;
-}
-.input__message {
-  margin-top: rem(4);
-  color: var(--c-red);
 }
 </style>

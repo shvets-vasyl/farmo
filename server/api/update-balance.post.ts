@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
       },
       body: JSON.stringify({
         user_id: body.user_id,
+				clicks_days: 2,
       }),
     })
 
