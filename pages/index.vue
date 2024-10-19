@@ -38,17 +38,14 @@ onMounted(async () => {
   let userId = localStorage.getItem('userId');
 
 
+  if (!userId && window.Telegram) {
+		const id = window.Telegram.WebApp.initDataUnsafe.user.id
 
-
-  if (userId) {
-		alert(`store:, ${userId}`)
-		userId
-  } else {
-		if (!window.Telegram) return
-		localStorage.setItem('userId', window.Telegram.WebApp.initDataUnsafe.user.id);
-
-		alert(window.Telegram.WebApp.initDataUnsafe.user);
+		localStorage.setItem('userId', id);
+		userId = id
   }
+
+	alert(userId)
 
   // const USER_ID = window.Telegram.WebApp.initDataUnsafe.user.id;
   // // const USER_ID = 992580016;
