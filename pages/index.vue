@@ -41,7 +41,7 @@ onMounted(async () => {
 			}
 		})
 
-	alert(window.Telegram.WebApp.initDataUnsafe)
+	alert(window.Telegram.WebApp.initDataUnsafe.user)
   // if (!window.Telegram) return;
 
   // const USER_ID = window.Telegram.WebApp.initDataUnsafe.user.id;
