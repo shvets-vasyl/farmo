@@ -44,8 +44,6 @@ onMounted(async () => {
 
     localStorage.setItem("userId", id);
     userId = id;
-
-		alert(`local: ${id}`)
   }
 
   try {
@@ -76,15 +74,6 @@ onMounted(async () => {
     });
   }
 
-	window.addEventListener("beforeunload", clearLocalStorage);
-});
-
-const clearLocalStorage = () => {
-  localStorage.removeItem("userId");
-};
-
-onUnmounted(() => {
-  window.removeEventListener("beforeunload", clearLocalStorage);
 });
 </script>
 
