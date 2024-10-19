@@ -41,8 +41,8 @@ onMounted(async () => {
 	// 		}
 	// 	})
 
-		onMounted(() => {
   // Додаємо затримку перед отриманням даних
+  setTimeout(() => {
     if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
       const userInfo = window.Telegram.WebApp.initDataUnsafe.user;
       if (userInfo) {
@@ -53,7 +53,7 @@ onMounted(async () => {
     } else {
       alert("Telegram WebApp is not initialized yet");
     }
-});
+  }, 3000); // Затримка в 1 секунду
   // if (!window.Telegram) return;
 
   // const USER_ID = window.Telegram.WebApp.initDataUnsafe.user.id;
