@@ -35,29 +35,20 @@ import { gsap } from "gsap"
 
 
 onMounted(async () => {
+  let userId = localStorage.getItem('userId');
 
-	// gsap.to(".cover", {
-	// 		opacity: 0,
-	// 		delay: 0.5,
-	// 		onComplete() {
-	// 			store.loading = false
-	// 		}
-	// 	})
 
-  // Додаємо затримку перед отриманням даних
-  const STORAGE_USER_ID = localStorage.getItem('userId');
 
-  if (STORAGE_USER_ID) {
-    alert("User info from local storage: " + STORAGE_USER_ID);
+
+  if (userId) {
+		alert(`store:, ${userId}`)
+		userId
   } else {
 		if (!window.Telegram) return
+		localStorage.setItem('userId', window.Telegram.WebApp.initDataUnsafe.user.id);
 
-		const USER_ID = window.Telegram.WebApp.initDataUnsafe.user.id;
-
-		localStorage.setItem('userId', USER_ID);
-		alert(JSON.stringify(USER_ID));
+		alert(window.Telegram.WebApp.initDataUnsafe.user);
   }
-  // if (!window.Telegram) return;
 
   // const USER_ID = window.Telegram.WebApp.initDataUnsafe.user.id;
   // // const USER_ID = 992580016;
