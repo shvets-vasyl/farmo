@@ -39,10 +39,13 @@ onMounted(async () => {
   let userId = localStorage.getItem("userId");
 
   if (!userId && window.Telegram) {
-    const id = window.Telegram.WebApp.initDataUnsafe.user.id;
+		const id = window.Telegram.WebApp.initDataUnsafe.user.id
+		// const id = "992580016"
 
     localStorage.setItem("userId", id);
     userId = id;
+
+		alert(`local: ${id}`)
   }
 
   try {
@@ -72,6 +75,16 @@ onMounted(async () => {
       },
     });
   }
+
+	window.addEventListener("beforeunload", clearLocalStorage);
+});
+
+const clearLocalStorage = () => {
+  localStorage.removeItem("userId");
+};
+
+onUnmounted(() => {
+  window.removeEventListener("beforeunload", clearLocalStorage);
 });
 </script>
 
