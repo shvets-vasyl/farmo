@@ -42,18 +42,25 @@ onMounted(async () => {
 	// 	})
 
   // Додаємо затримку перед отриманням даних
-  setTimeout(() => {
-    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
-      const userInfo = window.Telegram.WebApp.initDataUnsafe.user;
-      if (userInfo) {
-        alert(JSON.stringify(userInfo));
+  const storedUserInfo = localStorage.getItem('userInfo');
+
+  if (storedUserInfo) {
+    alert("User info from local storage: " + storedUserInfo);
+  } else {
+    setTimeout(() => {
+      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+        const userInfo = window.Telegram.WebApp.initDataUnsafe.user;
+        if (userInfo) {
+          localStorage.setItem('userInfo', JSON.stringify(userInfo));
+          alert(JSON.stringify(userInfo));
+        } else {
+          alert("User info is undefined");
+        }
       } else {
-        alert("User info is undefined");
+        alert("Telegram WebApp is not initialized yet");
       }
-    } else {
-      alert("Telegram WebApp is not initialized yet");
-    }
-  }, 3000); // Затримка в 1 секунду
+    }, 1000);
+  }
   // if (!window.Telegram) return;
 
   // const USER_ID = window.Telegram.WebApp.initDataUnsafe.user.id;
