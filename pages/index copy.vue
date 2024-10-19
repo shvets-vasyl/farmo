@@ -16,6 +16,7 @@ onMounted(() => {
       const userInfo = window.Telegram.WebApp.initDataUnsafe.user;
       if (userInfo) {
         alert(JSON.stringify(userInfo));
+				alert("scs");
       } else {
         alert("User info is undefined");
       }
