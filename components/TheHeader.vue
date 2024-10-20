@@ -4,14 +4,20 @@
       <div class="header__profile-name">
         <div class="header__icon-logo">
           <div class="header__btn-bg" />
-					<div v-if="store.user.profile?.photo" class="header__icon-photo-wrap">
-						<img :src="store.user.profile?.photo" class="common-media" alt="" />
-					</div>
+          <div v-if="store.user.profile?.photo" class="header__icon-photo-wrap">
+            <img :src="store.user.profile?.photo" class="common-media" alt="" />
+          </div>
           <div v-else class="header__icon-logo-wrap">
             <IconsLogo />
           </div>
         </div>
-        <p class="header__profile-name-text t1">{{ store.user.profile?.username }}</p>
+        <p class="header__profile-name-text t1">
+          {{
+            store.user.profile?.username
+              ? store.user.profile?.username
+              : store.user.profile?.first_name
+          }}
+        </p>
       </div>
 
       <button class="header__profile-btn" @click="store.show_block = 'profile'">
@@ -55,8 +61,8 @@ import { store } from "@/store";
   align-items: center;
   justify-content: center;
   position: relative;
-	border-radius: rem(10);
-	overflow: hidden;
+  border-radius: rem(10);
+  overflow: hidden;
 }
 .header__icon-logo-wrap {
   flex: 0 0 rem(19);
