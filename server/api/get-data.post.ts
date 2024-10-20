@@ -3,9 +3,9 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event);
 
     const { API } = useRuntimeConfig().public;
-    const { id, path } = body;
+    const { path } = body;
 
-    const response = await $fetch(`${API}${path}/${id}`, {
+    const response = await $fetch(`${API}${path}`, {
       method: "GET",
     });
 

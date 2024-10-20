@@ -11,8 +11,8 @@
 
 <script lang="ts" setup>
 const formatNumber = computed(() => {
-	if (store.user.info) {
-		const numStr = store.user.info?.balance.toString()
+	if (store.user.info && store.user.info.balance) {
+		const numStr = store.user.info.balance.toString()
 		return numStr.replace(/(\d+)(\d{3})$/, '$1, $2')
 	} else {
 		return 0

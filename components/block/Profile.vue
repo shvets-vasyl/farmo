@@ -171,7 +171,7 @@ const onChangeInputFile = (event: Event): void => {
 
 const onSubmit = async () => {
   try {
-    const response = await $fetch<ApiResponseInterface>("/api/user-update", {
+    const response = await $fetch<ApiResponseInterface>("/api/update-data", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -13,16 +13,15 @@
       <div class="progress__level t1">
         <span class="progress__level-text">Level</span>
         <span class="progress__level-count">
-          {{ store.user.info?.lvl }}/10
+          {{ store.user.info?.lvl }}/{{
+            Object.keys(store.game.lvl_info as Object).length - 1
+          }}
         </span>
       </div>
     </div>
 
     <div class="progress__body">
-      <div
-        class="progress__line"
-        :style="`width:${store.progress.percent}%`"
-      />
+      <div class="progress__line" :style="`width:${store.progress.percent}%`" />
     </div>
   </div>
 </template>
@@ -59,12 +58,12 @@ import { store } from "@/store";
   border: rem(0.5) solid rgba(#555555, 0.75);
   height: rem(9);
   background: var(--c-grey-2);
-	overflow: hidden;
+  overflow: hidden;
 }
 .progress__line {
   height: 100%;
   background: linear-gradient(to right, #adfaa1, #c597cc, #2f39a3);
   border-radius: rem(30);
-	transition: width 0.2s var(--default-ease);
+  transition: width 0.2s var(--default-ease);
 }
 </style>

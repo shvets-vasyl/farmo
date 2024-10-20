@@ -4,7 +4,7 @@
       <main class="main">
         <TheCover v-if="store.loading" />
 
-        <template v-else>
+        <template v-if="store.show_content">
           <TemplateShadow />
 
           <TheHeader
@@ -32,43 +32,31 @@
 
 <script lang="ts" setup>
 import { store } from "@/store";
-import type { UserProfileInterface, UserInfoInterface } from "@/types/common";
-import { paths } from "@/utils/api/paths"
 import { gsap } from "gsap";
 
+const { refreshData } = useUserData();
+
 onMounted(async () => {
-  let userId = localStorage.getItem("userId");
-
-  if (!userId && window.Telegram) {
-    const id = window.Telegram.WebApp.initDataUnsafe.user.id
-    // const id = "992580016";
-
-    localStorage.setItem("userId", id);
-    userId = id;
-  }
-
   try {
-    const USER_PROFILE = await $fetch<UserProfileInterface>("/api/user-data", {
-      method: "POST",
-      body: JSON.stringify({ id: userId, path: paths.profile }),
+    await refreshData({
+      profile: true,
+      info: true,
+      referrals: true,
+      lvlInfo: true,
     });
-
-    const USER_INFO = await $fetch<UserInfoInterface>("/api/user-data", {
-      method: "POST",
-      body: JSON.stringify({ id: userId, path: paths.game_info }),
-    });
-
-    store.user.profile = USER_PROFILE;
-    store.user.info = USER_INFO;
   } catch (error) {
     console.error("Error fetching user data:", error);
   } finally {
-    gsap.to(".cover", {
-      opacity: 0,
-      delay: 0.5,
-      onComplete() {
-        store.loading = false;
-      },
+    store.show_content = true;
+
+    nextTick(() => {
+      gsap.to(".cover", {
+        opacity: 0,
+        delay: 0.5,
+        onComplete() {
+          store.loading = false;
+        },
+      });
     });
   }
 });

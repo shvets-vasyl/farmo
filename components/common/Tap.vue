@@ -11,45 +11,31 @@
       <img
         src="/panda.png"
         draggable="false"
-        :class="{
-          _active: store.progress.level === 0 || store.progress.level === 1,
-        }"
+        :class="{_active: store.user.info?.lvl === 0}"
         alt=""
       />
       <img
         src="/panda2.png"
         draggable="false"
-        :class="{
-          _active:
-            store.progress.level === 2 ||
-            store.progress.level === 3 ||
-            store.progress.level === 4,
-        }"
+        :class="{_active: store.user.info?.lvl === 1}"
         alt=""
       />
       <img
         src="/panda3.png"
         draggable="false"
-        :class="{
-          _active:
-            store.progress.level === 5 ||
-            store.progress.level === 6 ||
-            store.progress.level === 7,
-        }"
+        :class="{_active: store.user.info?.lvl === 2}"
         alt=""
       />
       <img
         src="/panda4.png"
         draggable="false"
-        :class="{
-          _active: store.progress.level === 8 || store.progress.level === 9,
-        }"
+        :class="{_active: store.user.info?.lvl === 3}"
         alt=""
       />
       <img
         src="/panda5.png"
         draggable="false"
-        :class="{ _active: store.progress.level === 10 }"
+        :class="{_active: store.user.info?.lvl === 4}"
         alt=""
       />
     </div>
@@ -58,9 +44,11 @@
 
 <script lang="ts" setup>
 import { store } from "@/store";
-import type { DignityNames, Levels } from "@/types/common";
 import { paths } from "@/utils/api/paths"
 import { gsap } from "gsap";
+import type { LvlInfoInterface } from "@/types/common"
+
+const { refreshData } = useUserData();
 
 const onPress = async (event: MouseEvent) => {
 	if (store.user.info) {
@@ -134,35 +122,18 @@ const onPress = async (event: MouseEvent) => {
     ease: "power1.out",
   }, 0);
 
+
+	// for (let index = 0; index < 50; index++) {
+	// 	updateBalance()
+	// }
+
 	updateBalance()
+
+
 };
-
-const levelUp = (level: Levels, dignity: DignityNames) => {
-  store.progress.percent = 100;
-  store.progress.level = level;
-  store.progress.dignity = dignity;
-
-  if (store.progress.level !== store.all_levels[store.all_levels.length - 1]) {
-    setTimeout(() => {
-      store.progress.percent = 0;
-    }, 200);
-  }
-};
-
-const setPercent = () => {
-  const getPreviousCoinsReach = store.coin_levels[store.progress.level - 1];
-  const getCurrentCoinsReach = store.coin_levels[store.progress.level];
-
-  const getDifference = getPreviousCoinsReach
-    ? getCurrentCoinsReach - getPreviousCoinsReach
-    : getCurrentCoinsReach;
-
-  store.progress.percent += 100 / getDifference;
-};
-
 const updateBalance = async () => {
 	try {
-		const response = await $fetch("/api/user-update", {
+		const response = await $fetch("/api/update-data", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -179,20 +150,42 @@ const updateBalance = async () => {
 	}
 }
 
+onMounted(() => {
+	getProgressPercent()
+})
+
+const getProgressPercent = () => {
+  if (!store.user.info || !store.game.lvl_info) return;
+
+  const lvlKey = String(store.user.info.lvl) as keyof LvlInfoInterface;
+  const coinsFrom = store.game.lvl_info[lvlKey][0];
+  const coinsTo = store.game.lvl_info[lvlKey][1];
+
+  const currentBalance = store.user.info?.balance ?? 0;
+
+  if (currentBalance < coinsFrom) return 0;
+  if (currentBalance >= coinsTo) return 100;
+
+  const progress = currentBalance - coinsFrom;
+  const totalCoinsNeeded = coinsTo - coinsFrom;
+  const percent = (progress / totalCoinsNeeded) * 100;
+
+  store.progress.percent = percent;
+}
+
 watch(
   () => store.user.info?.balance,
-  (count) => {
-    if (store.progress.level === store.all_levels[store.all_levels.length - 1])
-      return;
+  async (newBalance) => {
+    if (!store.user.info || !store.game.lvl_info || newBalance === undefined) return;
 
-    // Progress line percent
-    setPercent();
+    const lvlKey = String(store.user.info.lvl) as keyof LvlInfoInterface;
+    const coinsTo = store.game.lvl_info[lvlKey][1];
 
-    // level up
-    for (let i = 0; i < store.coin_levels.length; i++) {
-      if (count === store.coin_levels[i]) {
-        levelUp(store.all_levels[i + 1], store.dignity_names[i + 1]);
-      }
+    if (newBalance >= coinsTo) {
+      store.progress.percent = 0;
+      await refreshData({ info: true, lvlInfo: true });
+    } else {
+      getProgressPercent();
     }
   }
 );

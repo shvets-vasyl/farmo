@@ -60,12 +60,9 @@ const updateValue = (event: Event) => {
 .input:read-only {
   opacity: 0.4;
 }
-.input:focus {
+.input:focus:not(:read-only) {
   border-color: var(--c-white);
   color: var(--c-white);
-}
-.input:read-only:focus {
-  border-color: var(--c-grey-5);
 }
 .input::placeholder {
   font-size: rem(15);

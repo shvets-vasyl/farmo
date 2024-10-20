@@ -31,11 +31,11 @@
         <div class="h5">List of your friends</div>
 
         <div
-          v-if="USER_REFERRALS && USER_REFERRALS.length"
+          v-if="store.user.referrals && store.user.referrals.length"
           class="invite__invited-friends-list"
         >
           <div
-            v-for="(item, i) in USER_REFERRALS"
+            v-for="(item, i) in store.user.referrals"
             :key="i"
             class="invite__invited-friend-item"
           >
@@ -80,11 +80,16 @@
       </div>
 
       <div class="invite__btn">
-        <CommonButton :is-red="true">
-          <span>Invite a friend</span>
-          <span class="invite-icon">
-            <IconsInvite />
-          </span>
+        <CommonButton :is-red="true" @click="copyReferralLink">
+					<template v-if="copySuccess">
+						<span>Referral link copied!</span>
+					</template>
+					<template v-else>
+						<span>Invite a friend</span>
+						<span class="invite-icon">
+							<IconsInvite />
+						</span>
+					</template>
         </CommonButton>
       </div>
     </div>
@@ -93,20 +98,23 @@
 
 <script lang="ts" setup>
 import { store } from "@/store";
-import { paths } from "@/utils/api/paths";
-import type { UserReferralsInterface } from "@/types/common";
-
-const USER_REFERRALS = await $fetch<UserReferralsInterface[]>("/api/user-data", {
-  method: "POST",
-  body: JSON.stringify({
-    id: store.user.profile?.user_id,
-    path: paths.referrals,
-  }),
-});
 
 const formatCoins = (coins: number) => {
   const numStr = coins.toString();
   return numStr.replace(/(\d+)(\d{3})$/, "$1, $2");
+};
+
+const copySuccess = ref(false);
+
+const copyReferralLink = async () => {
+  const referralLink = `https://t.me/tappanda_bot?start=${store.user.profile?.user_id}`;
+
+	await navigator.clipboard.writeText(referralLink);
+	copySuccess.value = true;
+
+	setTimeout(() => {
+		copySuccess.value = false;
+	}, 2000);
 };
 </script>
 
