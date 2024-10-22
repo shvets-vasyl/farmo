@@ -14,8 +14,6 @@
               ? store.user.profile?.username
               : store.user.profile?.first_name
           }}
-
-{{ store.user.profile?.photo }}
         </p>
       </div>
 
