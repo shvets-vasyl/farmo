@@ -60,13 +60,13 @@
                   <IconsCheckbox v-if="item.is_online" />
                 </div>
                 <div class="invite__invited-friend-coins">
-									<div class="invite__invited-friend-coins-icon">
-										<img src="/coin.png" draggable="false" alt="" />
-									</div>
-									<div class="invite__invited-friend-coins-number t1">
-										{{ formatCoins(item.balance) }}
-									</div>
-								</div>
+                  <div class="invite__invited-friend-coins-icon">
+                    <img src="/coin.png" draggable="false" alt="" />
+                  </div>
+                  <div class="invite__invited-friend-coins-number t1">
+                    {{ formatCoins(item.balance) }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -96,7 +96,7 @@
 
 <script lang="ts" setup>
 import { store } from "@/store";
-import { getPhoto } from "@/utils/getPhoto"
+import { getPhoto } from "@/utils/getPhoto";
 
 const formatCoins = (coins: number) => {
   const numStr = coins.toString();
@@ -106,9 +106,11 @@ const formatCoins = (coins: number) => {
 const copySuccess = ref(false);
 
 const copyReferralLink = async () => {
-  const referralLink = `https://t.me/tappanda_bot?start=${store.user.profile?.user_id}`;
+  const referralText = `
+  🐼Tap Panda: Играй, Зарабатывай и Получай Вознаграждения - Каждая Игра Открывает Путь к Уникальным Бонусам!\n🎁Начни игру с Tap Panda прямо сейчас и зарабатывай вместе с нами!\nhttps://t.me/tappanda_bot?start=${store.user.profile?.user_id}
+  `;
 
-  await navigator.clipboard.writeText(referralLink);
+  await navigator.clipboard.writeText(referralText);
   copySuccess.value = true;
 
   setTimeout(() => {
@@ -235,8 +237,8 @@ const copyReferralLink = async () => {
 .invite__invited-friend-coins-icon {
   flex: 0 0 rem(20);
   width: rem(20);
-	position: relative;
-	top: rem(-2);
+  position: relative;
+  top: rem(-2);
 }
 .invite__invited-friend-info-right {
   display: flex;

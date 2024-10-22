@@ -178,7 +178,7 @@ const getProgressPercent = () => {
   const coinsTo = store.game.lvl_info[lvlKey][1];
 
 	if (Object.keys(store.game.lvl_info).length - 1 === store.user.info.lvl) {
-		return store.progress.percent = 0
+		return store.progress.percent = 100
 	}
 
   const currentBalance = store.user.info?.balance ?? 0;
