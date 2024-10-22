@@ -6,7 +6,6 @@
       <div
         class="profile__ava"
         :class="{ '_without-ava-photo': !store.user.profile?.photo }"
-        @click="pickPhoto"
       >
         <div class="profile__ava-media">
           <IconsLogo v-if="!store.user.profile?.photo" />
@@ -16,21 +15,6 @@
             class="common-media"
             alt="ava photo"
           />
-        </div>
-
-        <div class="profile__ava-edit">
-          <IconsEdit />
-        </div>
-
-        <input
-          class="profile__file-input"
-          type="file"
-          accept="image/*"
-          @change="onChangeInputFile"
-        />
-
-        <div class="profile__ava-message t2">
-          {{ messages.ava }}
         </div>
       </div>
 
@@ -114,14 +98,9 @@ import { paths } from "@/utils/api/paths"
 import type { ApiResponseInterface } from "@/types/common"
 
 const messages = reactive({
-  ava: "",
   validation: "",
 	status: ""
 });
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
-const MAX_WIDTH = 500;
-const MAX_HEIGHT = 500;
 
 const formValues = reactive({
   phone: store.user.profile?.phone_number || "",
@@ -129,45 +108,6 @@ const formValues = reactive({
   country: store.user.profile?.country || "",
   region: store.user.profile?.region || "",
 });
-
-const pickPhoto = () => {
-  const fileInput = document.querySelector(
-    ".profile__file-input"
-  ) as HTMLInputElement;
-  fileInput.click();
-};
-
-const onChangeInputFile = (event: Event): void => {
-  const input = event.target as HTMLInputElement;
-  const file = input?.files ? input.files[0] : null;
-
-  if (file) {
-    if (file.size > MAX_FILE_SIZE) {
-      messages.ava = "The file exceeds the maximum size of 5 MB.";
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.src = e.target?.result as string;
-
-      img.onload = () => {
-        if (img.width > MAX_WIDTH || img.height > MAX_HEIGHT) {
-          messages.ava =
-            "The image exceeds the maximum dimensions of 500x500 pixels.";
-          return;
-        }
-
-        if (store.user.profile) {
-          store.user.profile.photo = img.src;
-        }
-      };
-    };
-
-    reader.readAsDataURL(file);
-  }
-};
 
 const onSubmit = async () => {
   try {
@@ -227,31 +167,6 @@ const onSubmit = async () => {
 }
 .profile__ava._without-ava-photo .profile__ava-media {
   overflow: visible;
-}
-.profile__ava-edit {
-  position: absolute;
-  width: rem(31);
-  height: rem(31);
-  border-radius: 100%;
-  background: #5d5e61;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  bottom: 0;
-  right: rem(-14);
-}
-.profile__file-input {
-  display: none;
-}
-.profile__ava-message {
-  position: absolute;
-  top: 50%;
-  left: 100%;
-  margin-left: rem(12);
-  transform: translateY(-50%);
-  text-align: center;
-  width: rem(150);
-  color: var(--c-red);
 }
 .profile__name {
   font-size: rem(20);

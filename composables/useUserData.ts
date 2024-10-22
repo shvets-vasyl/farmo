@@ -6,13 +6,14 @@ import type {
   LvlInfoInterface,
 } from "@/types/common";
 import { paths } from "@/utils/api/paths";
+import { getPhoto } from "@/utils/getPhoto"
 
 export const useUserData = () => {
   let userId = localStorage.getItem("userId");
 
   if (!userId && window.Telegram) {
     const id = window.Telegram.WebApp.initDataUnsafe.user.id
-    // const id = "992580016";
+    // const id = "696325148";
 
     localStorage.setItem("userId", id);
     userId = id;
@@ -24,6 +25,7 @@ export const useUserData = () => {
       body: JSON.stringify({ path: paths.profile + "/" + userId }),
     });
     store.user.profile = data;
+		store.user.profile.photo = getPhoto(userId as string)
     return data;
   };
 
@@ -31,6 +33,15 @@ export const useUserData = () => {
     const data = await $fetch<UserInfoInterface>("/api/get-data", {
       method: "POST",
       body: JSON.stringify({ path: paths.game_info + "/" + userId }),
+    });
+    store.user.info = data;
+    return data;
+  };
+
+	const fetchUserPhoto = async () => {
+    const data = await $fetch<UserInfoInterface>("/api/get-data", {
+      method: "POST",
+      body: JSON.stringify({ path: paths.user_photo + "/" + userId }),
     });
     store.user.info = data;
     return data;
@@ -58,6 +69,7 @@ export const useUserData = () => {
     options: {
       profile?: boolean;
       info?: boolean;
+      photo?: boolean;
       referrals?: boolean;
       lvlInfo?: boolean;
     } = {}
@@ -66,6 +78,9 @@ export const useUserData = () => {
       await fetchUserProfile();
     }
     if (options.info) {
+      await fetchUserInfo();
+    }
+		if (options.photo) {
       await fetchUserInfo();
     }
     if (options.referrals) {
@@ -79,6 +94,7 @@ export const useUserData = () => {
   return {
     fetchUserProfile,
     fetchUserInfo,
+    fetchUserPhoto,
     fetchUserReferrals,
     fetchGameLvlInfo,
     refreshData,

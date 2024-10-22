@@ -41,34 +41,32 @@
           >
             <div class="invite__invited-friend-photo">
               <img
-                v-if="item.photo"
                 class="inner-media"
-                :src="item.photo"
+                :src="getPhoto(item.user_id)"
                 alt="friend photo"
               />
-              <span v-else>{{ item.username[0] }}</span>
             </div>
 
             <div class="invite__invited-friend-info">
               <div class="invite__invited-friend-info-left">
                 <div class="invite__invited-friend-name t1">
-                  {{ item.username }}
+                  {{ item.username ? item.username : item.first_name }}
                 </div>
                 <div class="invite__invited-friend-wallet"></div>
               </div>
               <div class="invite__invited-friend-info-right">
                 <div class="invite__invited-friend-online t1">
-                  <!-- {{ item.online ? "Online" : "Offline" }}
-                  <IconsCheckbox v-if="item.online" /> -->
+                  {{ item.is_online ? "Online" : "Offline" }}
+                  <IconsCheckbox v-if="item.is_online" />
                 </div>
-                <!-- <div class="invite__invited-friend-coins">
+                <div class="invite__invited-friend-coins">
 									<div class="invite__invited-friend-coins-icon">
 										<img src="/coin.png" draggable="false" alt="" />
 									</div>
 									<div class="invite__invited-friend-coins-number t1">
-										{{ formatCoins(item.coins) }}
+										{{ formatCoins(item.balance) }}
 									</div>
-								</div> -->
+								</div>
               </div>
             </div>
           </div>
@@ -81,15 +79,15 @@
 
       <div class="invite__btn">
         <CommonButton :is-red="true" @click="copyReferralLink">
-					<template v-if="copySuccess">
-						<span>Referral link copied!</span>
-					</template>
-					<template v-else>
-						<span>Invite a friend</span>
-						<span class="invite-icon">
-							<IconsInvite />
-						</span>
-					</template>
+          <template v-if="copySuccess">
+            <span>Referral link copied!</span>
+          </template>
+          <template v-else>
+            <span>Invite a friend</span>
+            <span class="invite-icon">
+              <IconsInvite />
+            </span>
+          </template>
         </CommonButton>
       </div>
     </div>
@@ -98,6 +96,7 @@
 
 <script lang="ts" setup>
 import { store } from "@/store";
+import { getPhoto } from "@/utils/getPhoto"
 
 const formatCoins = (coins: number) => {
   const numStr = coins.toString();
@@ -109,12 +108,12 @@ const copySuccess = ref(false);
 const copyReferralLink = async () => {
   const referralLink = `https://t.me/tappanda_bot?start=${store.user.profile?.user_id}`;
 
-	await navigator.clipboard.writeText(referralLink);
-	copySuccess.value = true;
+  await navigator.clipboard.writeText(referralLink);
+  copySuccess.value = true;
 
-	setTimeout(() => {
-		copySuccess.value = false;
-	}, 2000);
+  setTimeout(() => {
+    copySuccess.value = false;
+  }, 2000);
 };
 </script>
 
@@ -210,16 +209,6 @@ const copyReferralLink = async () => {
   border-radius: 100%;
   overflow: hidden;
 }
-.invite__invited-friend-photo span {
-  font-size: rem(20);
-  font-family: var(--font-700);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  background: var(--c-pink);
-}
 .invite__invited-friend-name {
   opacity: 0.8;
 }
@@ -246,11 +235,13 @@ const copyReferralLink = async () => {
 .invite__invited-friend-coins-icon {
   flex: 0 0 rem(20);
   width: rem(20);
+	position: relative;
+	top: rem(-2);
 }
 .invite__invited-friend-info-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: rem(4);
+  gap: rem(8);
 }
 </style>

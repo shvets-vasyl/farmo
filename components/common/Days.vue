@@ -22,7 +22,7 @@ import { store } from "@/store";
 	display: flex;
 	align-items: center;
 	gap: rem(11);
-	margin-top: rem(-63);
+	margin-top: rem(-70);
 }
 .days__fire {
 	width: rem(18);

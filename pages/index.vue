@@ -4,8 +4,6 @@
       <main class="main">
         <TheCover v-if="store.loading" />
 
-				<!-- <Testing /> -->
-
         <template v-if="store.show_content">
           <TemplateShadow />
 

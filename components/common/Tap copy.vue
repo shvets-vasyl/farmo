@@ -58,6 +58,10 @@ import type { LvlInfoInterface } from "@/types/common";
 const { refreshData } = useUserData();
 
 const onPress = async (event: MouseEvent) => {
+  if (store.user.info) {
+    store.user.info.balance += 1;
+  }
+
   const circle2 = document.querySelector(".tap__circle2");
   const tap = document.querySelector(".tap");
 
@@ -156,12 +160,8 @@ const updateBalance = async () => {
       }),
     });
 
-		if (store.user.info) {
-			store.user.info.balance += 1;
-		}
     // console.log(response);
   } catch (error) {
-
     console.error(error);
   }
 };
@@ -177,14 +177,10 @@ const getProgressPercent = () => {
   const coinsFrom = store.game.lvl_info[lvlKey][0];
   const coinsTo = store.game.lvl_info[lvlKey][1];
 
-	if (Object.keys(store.game.lvl_info).length - 1 === store.user.info.lvl) {
-		return store.progress.percent = 0
-	}
-
   const currentBalance = store.user.info?.balance ?? 0;
 
-  if (currentBalance < coinsFrom) return store.progress.percent = 0;
-  if (currentBalance >= coinsTo) return store.progress.percent = 100;
+  if (currentBalance < coinsFrom) return 0;
+  if (currentBalance >= coinsTo) return 100;
 
   const progress = currentBalance - coinsFrom;
   const totalCoinsNeeded = coinsTo - coinsFrom;
@@ -193,22 +189,24 @@ const getProgressPercent = () => {
   store.progress.percent = percent;
 };
 
-
-
 watch(
   () => store.user.info?.balance,
   async (newBalance) => {
     if (!store.user.info || !store.game.lvl_info || newBalance === undefined)
       return;
 
-			let lvlKey = String(store.user.info.lvl) as keyof LvlInfoInterface;
-			let coinsTo = store.game.lvl_info[lvlKey][1];
+    const lvlKey = String(store.user.info.lvl) as keyof LvlInfoInterface;
+    const coinsTo = store.game.lvl_info[lvlKey][1];
+
+
+		getProgressPercent();
+
+
 
     if (newBalance > coinsTo) {
+			store.progress.percent = 0
       await refreshData({ info: true, lvlInfo: true });
     }
-
-		getProgressPercent()
   }
 );
 </script>

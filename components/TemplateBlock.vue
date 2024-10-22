@@ -30,6 +30,6 @@
 	overflow: auto;
 }
 .main-block .template-block__wrap {
-	padding-bottom: rem(50);
+	padding-bottom: rem(54);
 }
 </style>

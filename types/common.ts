@@ -40,8 +40,8 @@ export interface UserReferralsInterface {
   username: string;
   first_name: string;
   last_name: string | null;
+	is_online: boolean;
   user_id: number;
-  photo: string | null;
 }
 
 export interface ApiResponseInterface {
