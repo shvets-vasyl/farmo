@@ -3,15 +3,10 @@
     <CommonBack @click.native="store.show_block = 'main'" />
 
     <div class="profile__wrap">
-      <div
-        class="profile__ava"
-        :class="{ '_without-ava-photo': !store.user.profile?.photo }"
-      >
+      <div class="profile__ava">
         <div class="profile__ava-media">
-          <IconsLogo v-if="!store.user.profile?.photo" />
           <img
-            v-else
-            :src="store.user.profile.photo"
+            :src="store.user.profile?.photo!"
             class="common-media"
             alt="ava photo"
           />
@@ -67,7 +62,7 @@
           <CommonMessage
             v-if="messages.validation"
             :text="messages.validation"
-						:status="messages.status"
+            :status="messages.status"
           />
         </div>
       </form>
@@ -94,12 +89,12 @@
 
 <script lang="ts" setup>
 import { store } from "@/store";
-import { paths } from "@/utils/api/paths"
-import type { ApiResponseInterface } from "@/types/common"
+import { paths } from "@/utils/api/paths";
+import type { ApiResponseInterface } from "@/types/common";
 
 const messages = reactive({
   validation: "",
-	status: ""
+  status: "",
 });
 
 const formValues = reactive({
@@ -117,14 +112,14 @@ const onSubmit = async () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-				path: `${paths.user_edit}/${store.user.profile?.user_id}`,
+        path: `${paths.user_edit}/${store.user.profile?.user_id}`,
         age: Number(formValues.age) || "",
         country: formValues.country || "",
         region: formValues.region || "",
       }),
     });
 
-		messages.status = response.status;
+    messages.status = response.status;
 
     if (response.message) {
       messages.validation = response.message;
@@ -161,12 +156,6 @@ const onSubmit = async () => {
   height: 100%;
   overflow: hidden;
   border-radius: 100%;
-}
-.profile__ava._without-ava-photo {
-  padding: rem(20) rem(16) rem(16);
-}
-.profile__ava._without-ava-photo .profile__ava-media {
-  overflow: visible;
 }
 .profile__name {
   font-size: rem(20);

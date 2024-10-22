@@ -4,11 +4,8 @@
       <div class="header__profile-name">
         <div class="header__icon-logo">
           <div class="header__btn-bg" />
-          <div v-if="store.user.profile?.photo" class="header__icon-photo-wrap">
-            <img :src="store.user.profile?.photo" class="common-media" alt="" />
-          </div>
-          <div v-else class="header__icon-logo-wrap">
-            <IconsLogo />
+          <div class="header__icon-photo-wrap">
+            <img :src="store.user.profile?.photo!" class="common-media" alt="" />
           </div>
         </div>
         <p class="header__profile-name-text t1">
@@ -63,12 +60,6 @@ import { store } from "@/store";
   position: relative;
   border-radius: rem(10);
   overflow: hidden;
-}
-.header__icon-logo-wrap {
-  flex: 0 0 rem(19);
-  width: rem(19);
-  position: relative;
-  top: rem(2);
 }
 .header__btn-bg {
   background: linear-gradient(rgba(#ffffff, 0.8), #4e4949);
