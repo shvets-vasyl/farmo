@@ -14,8 +14,6 @@
               ? store.user.profile?.username
               : store.user.profile?.first_name
           }}
-<br />
-					{{ store.user.profile?.user_id }}
         </p>
       </div>
 
