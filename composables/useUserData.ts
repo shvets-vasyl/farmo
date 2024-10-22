@@ -9,15 +9,18 @@ import { paths } from "@/utils/api/paths";
 import { getPhoto } from "@/utils/getPhoto"
 
 export const useUserData = () => {
-  let userId = localStorage.getItem("userId");
+  // let userId = localStorage.getItem("userId");
 
-  if (!userId && window.Telegram) {
-    const id = window.Telegram.WebApp.initDataUnsafe.user.id
-    // const id = "696325148";
+  // if (!userId && window.Telegram) {
+  //   // const id = window.Telegram.WebApp.initDataUnsafe.user.id
+  //   const id = "696325148";
 
-    localStorage.setItem("userId", id);
-    userId = id;
-  }
+  //   localStorage.setItem("userId", id);
+  //   userId = id;
+  // }
+
+	const id = "696325148";
+	let userId = id;
 
   const fetchUserProfile = async () => {
     const data = await $fetch<UserProfileInterface>("/api/get-data", {
