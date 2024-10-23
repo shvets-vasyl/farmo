@@ -6,7 +6,8 @@
       <div class="profile__ava">
         <div class="profile__ava-media">
           <img
-            :src="store.user.profile?.photo!"
+						v-if="store.user.profile?.photo"
+            :src="store.user.profile?.photo"
             class="common-media"
             alt="ava photo"
           />
