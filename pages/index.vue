@@ -5,10 +5,10 @@
         <TheCover v-if="store.loading" />
 
         <template v-if="store.show_content">
-					<ShareWidget
-    url="https://vue-tg.pages.dev"
-    comment="Telegram integration for Vue"
-  />
+					<div class="testing">
+						<Popup message="Hello" />
+					</div>
+
           <TemplateShadow />
 
           <TheHeader
@@ -37,7 +37,7 @@
 <script lang="ts" setup>
 import { store } from "@/store";
 import { gsap } from "gsap";
-import { ShareWidget } from 'vue-tg'
+import { Popup } from 'vue-tg'
 
 const { refreshData } = useUserData();
 
@@ -68,6 +68,10 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
+.testing {
+	position: relative;
+	z-index: 1000;
+}
 .main {
   overflow: hidden;
   height: 100vh;
