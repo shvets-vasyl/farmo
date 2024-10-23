@@ -5,13 +5,6 @@
         <TheCover v-if="store.loading" />
 
         <template v-if="store.show_content">
-					<div class="testing">
-						<ShareWidget
-    url="https://vue-tg.pages.dev"
-    comment="Telegram integration for Vue"
-  />
-					</div>
-
           <TemplateShadow />
 
           <TheHeader
