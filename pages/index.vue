@@ -33,7 +33,6 @@
 <script lang="ts" setup>
 import { store } from "@/store";
 import { gsap } from "gsap";
-import { ShareWidget } from 'vue-tg'
 
 const { refreshData } = useUserData();
 
