@@ -5,9 +5,12 @@
         <TheCover v-if="store.loading" />
 
         <template v-if="store.show_content">
-					<!-- <div class="testing">
-						<useWebApp message="Hello" />
-					</div> -->
+					<div class="testing">
+						<ShareWidget
+    url="https://vue-tg.pages.dev"
+    comment="Telegram integration for Vue"
+  />
+					</div>
 
           <TemplateShadow />
 
@@ -37,7 +40,7 @@
 <script lang="ts" setup>
 import { store } from "@/store";
 import { gsap } from "gsap";
-// import { useWebApp } from 'vue-tg'
+import { ShareWidget } from 'vue-tg'
 
 const { refreshData } = useUserData();
 
