@@ -5,6 +5,10 @@
         <TheCover v-if="store.loading" />
 
         <template v-if="store.show_content">
+					<ShareWidget
+    url="https://vue-tg.pages.dev"
+    comment="Telegram integration for Vue"
+  />
           <TemplateShadow />
 
           <TheHeader
@@ -33,6 +37,7 @@
 <script lang="ts" setup>
 import { store } from "@/store";
 import { gsap } from "gsap";
+import { ShareWidget } from 'vue-tg'
 
 const { refreshData } = useUserData();
 

@@ -30,6 +30,10 @@ export default defineNuxtConfig({
           content:
             "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
         },
+				{
+					"http-equiv": "Content-Security-Policy",
+					content: "upgrade-insecure-requests",
+				},
       ],
 			link: [{ rel: "icon", type: "image/png", href: "/tab-main.png" }],
       script: [{ src: "https://telegram.org/js/telegram-web-app.js" }],

@@ -12,8 +12,8 @@ export const useUserData = () => {
   let userId = localStorage.getItem("userId");
 
   if (!userId && window.Telegram) {
-    const id = window.Telegram.WebApp.initDataUnsafe.user.id
-    // const id = "696325148";
+    // const id = window.Telegram.WebApp.initDataUnsafe.user.id
+    const id = "992580016";
 
     localStorage.setItem("userId", id);
     userId = id;
