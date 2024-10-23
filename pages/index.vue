@@ -5,9 +5,9 @@
         <TheCover v-if="store.loading" />
 
         <template v-if="store.show_content">
-					<div class="testing">
-						<Popup message="Hello" />
-					</div>
+					<!-- <div class="testing">
+						<useWebApp message="Hello" />
+					</div> -->
 
           <TemplateShadow />
 
@@ -37,7 +37,7 @@
 <script lang="ts" setup>
 import { store } from "@/store";
 import { gsap } from "gsap";
-import { Popup } from 'vue-tg'
+// import { useWebApp } from 'vue-tg'
 
 const { refreshData } = useUserData();
 
