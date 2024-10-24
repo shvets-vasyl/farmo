@@ -10,17 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useAppKit, useAppKitAccount } from "@reown/appkit/vue";
-import { useWalletInfo } from '@reown/appkit/vue'
-const { address, isConnected, caipAddress, status } = useAppKitAccount()
-
-const { walletInfo } = useWalletInfo()
-
-const test1 = ref()
-const test2 = ref()
-const test3 = ref()
-const test4 = ref()
-
+import { useAppKit } from "@reown/appkit/vue";
 
 const modal = useAppKit();
 
@@ -33,7 +23,7 @@ const connectOtherWallet = async () => {
 
 <style lang="scss" scoped>
 .connect-wallet-btn {
-//  height: rem(57);
+	height: rem(57);
   display: flex;
   align-items: center;
   justify-content: center;

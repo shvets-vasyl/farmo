@@ -30,8 +30,6 @@ export default defineNuxtPlugin(() => {
     projectId,
     features: {
       analytics: true,
-			email: true,
-			socials: ["google"]
     },
   });
 });
