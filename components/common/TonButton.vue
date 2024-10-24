@@ -10,6 +10,7 @@
 </template>
 
 <script lang="ts" setup>
+import { paths } from "@/utils/api/paths";
 import { TonConnectUI, THEME } from "@tonconnect/ui";
 
 const { SITE_URL } = useRuntimeConfig().public;
@@ -21,7 +22,7 @@ onMounted(() => {
 const tonConnectUI = ref();
 const isWalletConnected = ref(false);
 
-const initTonWallet = () => {
+const initTonWallet = async () => {
   tonConnectUI.value = new TonConnectUI({
     manifestUrl: `${SITE_URL}/tonconnect-manifest.json`,
   });
@@ -31,8 +32,25 @@ const initTonWallet = () => {
     },
   };
 
-  tonConnectUI.value.onStatusChange(() => {
-    isWalletConnected.value = true;
+	tonConnectUI.value.onStatusChange(async (wallet: any) => {
+    isWalletConnected.value = wallet.connected;
+
+		try {
+			const response = await $fetch("/api/update-data", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					path: `${paths.add_ton_address}/${store.user.profile?.user_id}`,
+					ton_wallet_address: wallet.account.address,
+				}),
+			});
+
+			console.log(response);
+		} catch (error) {
+			console.error(error);
+		}
   });
 };
 

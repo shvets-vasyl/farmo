@@ -6,4 +6,5 @@ export const paths = {
 	referrals: "/api/users/referrals",
 	lvl_info: "/api/game/lvlinfo",
 	user_photo: "/api/users/user_photo",
+	add_ton_address: "/api/users/add_ton_address",
 }
