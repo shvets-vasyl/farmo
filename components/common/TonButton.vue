@@ -35,6 +35,9 @@ const initTonWallet = async () => {
 	tonConnectUI.value.onStatusChange(async (wallet: any) => {
     isWalletConnected.value = wallet.connected;
 
+		console.log(wallet);
+
+
 		try {
 			const response = await $fetch("/api/update-data", {
 				method: "POST",

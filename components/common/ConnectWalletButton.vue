@@ -6,10 +6,6 @@
 	>
 		<IconsEthereum />
 		<div class="t1">Ethereum</div>
-		<div>{{ test1 }}</div>
-		<div>{{ test2 }}</div>
-		<div>{{ test3 }}</div>
-		<div>{{ test4 }}</div>
 	</button>
 </template>
 
@@ -33,13 +29,6 @@ const isWalletConnected = ref(false)
 const connectOtherWallet = async () => {
   await modal.open();
 };
-
-onMounted(() => {
-	test1.value = isConnected
-	test2.value = walletInfo.value
-	test3.value = status
-	test4.value = address
-})
 </script>
 
 <style lang="scss" scoped>
