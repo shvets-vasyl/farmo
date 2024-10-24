@@ -1,10 +1,10 @@
 export const paths = {
-  profile: "/api/users/info",
-  game_info: "/api/users/gameinfo",
-	game_tap: "/api/game/tap",
-	user_edit: "/api/users/info/edit",
-	referrals: "/api/users/referrals",
-	lvl_info: "/api/game/lvlinfo",
-	user_photo: "/api/users/user_photo",
-	add_ton_address: "/api/users/add_ton_address",
+  profile: "/users/info",
+  game_info: "/users/gameinfo",
+	game_tap: "/game/tap",
+	user_edit: "/users/info/edit",
+	referrals: "/users/referrals",
+	lvl_info: "/game/lvlinfo",
+	user_photo: "/users/user_photo",
+	add_ton_address: "/users/add_ton_address",
 }
