@@ -8,6 +8,9 @@
 		<div class="t1" v-if="!isWalletConnected || !address">TON</div>
 		<div class="t1" v-else>{{ address.slice(0, 6) + '...' }}</div>
 
+		<div>{{ test2 }}</div>
+		<div>{{ test4 }}</div>
+
 	</button>
 </template>
 
@@ -25,6 +28,11 @@ const tonConnectUI = ref();
 const isWalletConnected = ref(false);
 const address = ref()
 
+const test1 = ref()
+const test2 = ref()
+const test3 = ref()
+const test4 = ref()
+
 const initTonWallet = async () => {
   tonConnectUI.value = new TonConnectUI({
     manifestUrl: `${SITE_URL}/tonconnect-manifest.json`,
@@ -35,10 +43,13 @@ const initTonWallet = async () => {
     },
   };
 
+	test2.value = tonConnectUI.value
+
 	tonConnectUI.value.onStatusChange(async (wallet: any) => {
     isWalletConnected.value = tonConnectUI.value.connected;
     address.value = wallet.account.address;
 
+		test4.value = wallet.account
 		try {
 			const response = await $fetch("/api/update-data", {
 				method: "POST",

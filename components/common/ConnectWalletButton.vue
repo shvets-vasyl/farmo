@@ -7,9 +7,6 @@
 		<IconsEthereum />
 		<div class="t1" v-if="!isConnected || !address">Ethereum</div>
 		<div class="t1" v-else>{{ address.slice(0, 6) + '...' }}</div>
-
-		<!-- <div>{{ test3 }}</div>
-		<div>{{ test2 }}</div> -->
   </button>
 </template>
 
