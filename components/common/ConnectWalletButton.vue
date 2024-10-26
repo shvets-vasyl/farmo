@@ -27,25 +27,27 @@ const test2 = ref()
 const test3 = ref()
 
 onMounted(async () => {
-  if (isConnected) {
-    try {
-      const response = await $fetch("/api/update-data", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          path: `${paths.add_ethereum_address}/${store.user.profile?.user_id}`,
-          ethereum_wallet_address: address,
-        }),
-      });
-			test2.value = response
-			test3.value = address
-      console.log("Ethereum wallet connect:", response);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+	setTimeout(async () => {
+		if (isConnected) {
+			try {
+				const response = await $fetch("/api/update-data", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						path: `${paths.add_ethereum_address}/${store.user.profile?.user_id}`,
+						ethereum_wallet_address: address,
+					}),
+				});
+				test2.value = response
+				test3.value = address
+				console.log("Ethereum wallet connect:", response);
+			} catch (error) {
+				console.error(error);
+			}
+		}
+	}, 1000)
 });
 </script>
 

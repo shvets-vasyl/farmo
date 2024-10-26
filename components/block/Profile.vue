@@ -74,6 +74,7 @@
       <div class="profile__wallet-options">
         <CommonTonButton />
         <CommonConnectWalletButton />
+				<CommonDisconnect />
       </div>
     </div>
 
