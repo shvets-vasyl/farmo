@@ -92,10 +92,6 @@ const onPress = async (event: MouseEvent) => {
 
   tap.appendChild(tapElement);
 
-	if (navigator) {
-		navigator.vibrate(200)
-	}
-
   // animation
   const tl = gsap.timeline();
   tl.to(circle2, { opacity: 1, duration: 0.1 });
@@ -146,6 +142,10 @@ const onPress = async (event: MouseEvent) => {
   );
 
   updateBalance();
+
+	if (navigator) {
+		navigator.vibrate(200)
+	}
 };
 const updateBalance = async () => {
   try {
