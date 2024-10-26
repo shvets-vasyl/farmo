@@ -26,9 +26,10 @@ const test = ref()
 
 onMounted(async () => {
 	setTimeout(() => {
-		test.value = isConnected
+
 	}, 3000)
   if (isConnected) {
+		test.value = isConnected
     try {
       const response = await $fetch("/api/update-data", {
         method: "POST",
