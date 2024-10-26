@@ -7,7 +7,7 @@
     <IconsEthereum />
     <div class="t1">Ethereum</div>
 		<div>{{ test }}</div>
-		<div>{{ address }}</div>
+		<div>{{ test3 }}</div>
 		<div>{{ test2 }}</div>
   </button>
 </template>
