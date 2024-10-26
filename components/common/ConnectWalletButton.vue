@@ -7,6 +7,7 @@
     <IconsEthereum />
     <div class="t1">Ethereum</div>
 		<div>{{ test }}</div>
+		<div>{{ test2 }}</div>
   </button>
 </template>
 
@@ -23,13 +24,14 @@ const connectOtherWallet = async () => {
 };
 
 const test = ref()
+const test2 = ref()
 
 onMounted(async () => {
-	setTimeout(() => {
+	// setTimeout(() => {
 
-	}, 3000)
+	// }, 3000)
   if (isConnected) {
-		test.value = isConnected
+		test.value = `${paths.add_ethereum_address}/${store.user.profile?.user_id}`
     try {
       const response = await $fetch("/api/update-data", {
         method: "POST",
@@ -41,6 +43,7 @@ onMounted(async () => {
           ethereum_wallet_address: address,
         }),
       });
+			test2.value = response
       console.log("Ethereum wallet connect:", response);
     } catch (error) {
       console.error(error);
