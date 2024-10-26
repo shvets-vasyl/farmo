@@ -4,8 +4,14 @@
     @click="connectOtherWallet"
     :class="{ _connected: isConnected }"
   >
-    <IconsEthereum />
-    <div class="t1">Ethereum</div>
+		<template v-if="!isConnected || !address">
+			<IconsEthereum />
+			<div class="t1">Ethereum</div>
+		</template>
+		<template v-else>
+			{{ address.slice(0, 10) + '...' }}
+		</template>
+
 		<!-- <div>{{ test3 }}</div>
 		<div>{{ test2 }}</div> -->
   </button>
