@@ -5,7 +5,9 @@
 		:class="{ _connected: isWalletConnected }"
 	>
 		<IconsTon />
-		<div class="t1">TON</div>
+		<div class="t1" v-if="!isWalletConnected || !address">TON</div>
+		<div class="t1" v-else>{{ address.slice(0, 6) + '...' }}</div>
+
 	</button>
 </template>
 
@@ -21,6 +23,7 @@ onMounted(() => {
 
 const tonConnectUI = ref();
 const isWalletConnected = ref(false);
+const address = ref()
 
 const initTonWallet = async () => {
   tonConnectUI.value = new TonConnectUI({
@@ -34,6 +37,7 @@ const initTonWallet = async () => {
 
 	tonConnectUI.value.onStatusChange(async (wallet: any) => {
     isWalletConnected.value = tonConnectUI.value.connected;
+    address.value = wallet.account.address;
 
 		try {
 			const response = await $fetch("/api/update-data", {
