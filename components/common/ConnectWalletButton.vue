@@ -6,7 +6,6 @@
   >
     <IconsEthereum />
     <div class="t1">Ethereum</div>
-		<div>{{ test }}</div>
 		<div>{{ test3 }}</div>
 		<div>{{ test2 }}</div>
   </button>
@@ -24,16 +23,11 @@ const connectOtherWallet = async () => {
   await modal.open();
 };
 
-const test = ref()
 const test2 = ref()
 const test3 = ref()
 
 onMounted(async () => {
-	// setTimeout(() => {
-
-	// }, 3000)
   if (isConnected) {
-		test.value = `${paths.add_ethereum_address}/${store.user.profile?.user_id}`
     try {
       const response = await $fetch("/api/update-data", {
         method: "POST",
