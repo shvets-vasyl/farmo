@@ -7,4 +7,5 @@ export const paths = {
 	lvl_info: "/game/lvlinfo",
 	user_photo: "/users/user_photo",
 	add_ton_address: "/users/add_ton_address",
+	add_ethereum_address: "/users/add_ethereum_address",
 }

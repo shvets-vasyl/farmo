@@ -20,7 +20,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       charset: "utf-8",
-      title: "Panda Tap",
+      title: "Panda Tap App",
       htmlAttrs: {
         lang: "en",
       },

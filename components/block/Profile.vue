@@ -78,12 +78,7 @@
     </div>
 
     <div class="profile__inst">
-      <div class="instagram__btn">
-        <CommonButton :is-red="true">
-          <IconsInstagram />
-          <span> Log in with Instagram </span>
-        </CommonButton>
-      </div>
+      <CommonConnectSocial />
     </div>
   </TemplateBlock>
 </template>
