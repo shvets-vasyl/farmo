@@ -143,9 +143,9 @@ const onPress = async (event: MouseEvent) => {
 
   updateBalance();
 
-	if (navigator) {
-		navigator.vibrate(200)
-	}
+	// if (navigator) {
+	// 	navigator.vibrate(200)
+	// }
 };
 const updateBalance = async () => {
   try {
