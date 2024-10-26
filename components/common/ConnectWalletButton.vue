@@ -7,6 +7,7 @@
     <IconsEthereum />
     <div class="t1">Ethereum</div>
 		<div>{{ test }}</div>
+		<div>{{ address }}</div>
 		<div>{{ test2 }}</div>
   </button>
 </template>
@@ -25,6 +26,7 @@ const connectOtherWallet = async () => {
 
 const test = ref()
 const test2 = ref()
+const test3 = ref()
 
 onMounted(async () => {
 	// setTimeout(() => {
@@ -44,6 +46,7 @@ onMounted(async () => {
         }),
       });
 			test2.value = response
+			test3.value = address
       console.log("Ethereum wallet connect:", response);
     } catch (error) {
       console.error(error);
