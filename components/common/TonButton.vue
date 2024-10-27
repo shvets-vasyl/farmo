@@ -43,6 +43,11 @@ const initTonWallet = async () => {
     },
   };
 
+	setTimeout(() => {
+		test.value = tonConnectUI.value.connected
+
+	}, 5000)
+
 	tonConnectUI.value.onStatusChange(async (wallet: any) => {
 		test.value = "scscs"
 
