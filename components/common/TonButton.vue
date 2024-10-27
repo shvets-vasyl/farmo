@@ -16,7 +16,7 @@ import { TonConnectUI, THEME } from "@tonconnect/ui";
 
 const { SITE_URL } = useRuntimeConfig().public;
 
-onMounted(() => {
+onMounted(async () => {
   initTonWallet();
 });
 
@@ -36,8 +36,6 @@ const getWalletAddress = async () => {
 		body: JSON.stringify({ path: `${paths.get_wallets}/${store.user.profile?.user_id}` }),
 	});
 
-	console.log(data.ton_wallet_address);
-
 	return data.ton_wallet_address
 };
 
@@ -52,22 +50,17 @@ const initTonWallet = async () => {
     },
   };
 
-	tonConnectUI.value.setConnectRequestParameters({ state: 'loading' });
-
-	const tonProofPayload = await getWalletAddress();
-
-  if (tonProofPayload) {
-    tonConnectUI.value.setConnectRequestParameters({
-      state: "ready",
-      value: { tonProof: tonProofPayload }
-    });
-  } else {
-    tonConnectUI.value.setConnectRequestParameters(null);
-  }
+	const hasTonAddress = await getWalletAddress();
 
 	tonConnectUI.value.onStatusChange(async (wallet: any) => {
     isWalletConnected.value = tonConnectUI.value.connected;
-    address.value = wallet.account.address;
+
+		if (hasTonAddress) {
+			address.value = hasTonAddress;
+			return
+		} else {
+			address.value = wallet.account.address;
+		}
 
 		try {
 			const response = await $fetch("/api/update-data", {
