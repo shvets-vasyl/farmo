@@ -7,7 +7,6 @@
 		<IconsTon />
 		<div class="t1" v-if="!isWalletConnected || !address">TON</div>
 		<div class="t1" v-else>{{ editedAddress }}</div>
-		<div>{{ test }}</div>
 	</button>
 </template>
 
@@ -31,7 +30,17 @@ const editedAddress = computed(() => {
 	return address.value.slice(0, 6) + '...'
 })
 
-const test = ref()
+const getWalletAddress = async () => {
+	const data = await $fetch<{ton_wallet_address: string}>("/api/get-data", {
+		method: "POST",
+		body: JSON.stringify({ path: `${paths.get_wallets}/${store.user.profile?.user_id}` }),
+	});
+
+	console.log(data.ton_wallet_address);
+
+	return data.ton_wallet_address
+};
+
 
 const initTonWallet = async () => {
   tonConnectUI.value = new TonConnectUI({
@@ -43,14 +52,20 @@ const initTonWallet = async () => {
     },
   };
 
-	setTimeout(() => {
-		test.value = tonConnectUI.value.connected
+	tonConnectUI.value.setConnectRequestParameters({ state: 'loading' });
 
-	}, 5000)
+	const tonProofPayload = await getWalletAddress();
+
+  if (tonProofPayload) {
+    tonConnectUI.value.setConnectRequestParameters({
+      state: "ready",
+      value: { tonProof: tonProofPayload }
+    });
+  } else {
+    tonConnectUI.value.setConnectRequestParameters(null);
+  }
 
 	tonConnectUI.value.onStatusChange(async (wallet: any) => {
-		test.value = "scscs"
-
     isWalletConnected.value = tonConnectUI.value.connected;
     address.value = wallet.account.address;
 
