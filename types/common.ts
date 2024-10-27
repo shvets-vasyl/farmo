@@ -9,6 +9,7 @@ export interface Store {
     profile: UserProfileInterface | null;
     info: UserInfoInterface | null;
     referrals: UserReferralsInterface[] | null;
+    wallets: UserWalletsInterface | null;
   };
   game: {
     lvl_info: LvlInfoInterface | null;
@@ -40,8 +41,13 @@ export interface UserReferralsInterface {
   username: string;
   first_name: string;
   last_name: string | null;
-	is_online: boolean;
+  is_online: boolean;
   user_id: number;
+}
+
+export interface UserWalletsInterface {
+  ton_wallet_address: string;
+	ethereum_wallet_address: string;
 }
 
 export interface ApiResponseInterface {

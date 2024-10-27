@@ -27,31 +27,41 @@ const connectOtherWallet = async () => {
   await modal.open();
 };
 
-const test2 = ref()
-const test3 = ref()
+const getWalletAddress = async () => {
+	const data = await $fetch<{ethereum_wallet_address: string}>("/api/get-data", {
+		method: "POST",
+		body: JSON.stringify({ path: `${paths.get_wallets}/${store.user.profile?.user_id}` }),
+	});
+
+	return data.ethereum_wallet_address
+};
 
 onMounted(async () => {
-	setTimeout(async () => {
-		if (isConnected) {
-			try {
-				const response = await $fetch("/api/update-data", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						path: `${paths.add_ethereum_address}/${store.user.profile?.user_id}`,
-						ethereum_wallet_address: address,
-					}),
-				});
-				test2.value = response
-				test3.value = address
-				console.log("Ethereum wallet connect:", response);
-			} catch (error) {
-				console.error(error);
+	const hasWalletAddress = await getWalletAddress()
+
+	if (hasWalletAddress) {
+
+	} else {
+		setTimeout(async () => {
+			if (isConnected) {
+				try {
+					const response = await $fetch("/api/update-data", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							path: `${paths.add_ethereum_address}/${store.user.profile?.user_id}`,
+							ethereum_wallet_address: address,
+						}),
+					});
+					console.log("Ethereum wallet connect:", response);
+				} catch (error) {
+					console.error(error);
+				}
 			}
-		}
-	}, 1000)
+		}, 1000)
+	}
 });
 </script>
 

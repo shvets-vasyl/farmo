@@ -2,10 +2,10 @@
   <button
 		class="ton-btn"
 		@click="connectTonWallet"
-		:class="{ _connected: isWalletConnected }"
+		:class="{ _connected: address }"
 	>
 		<IconsTon />
-		<div class="t1" v-if="!isWalletConnected || !address">TON</div>
+		<div class="t1" v-if="!address">TON</div>
 		<div class="t1" v-else>{{ editedAddress }}</div>
 	</button>
 </template>
@@ -16,29 +16,18 @@ import { TonConnectUI, THEME } from "@tonconnect/ui";
 
 const { SITE_URL } = useRuntimeConfig().public;
 
-onMounted(async () => {
+onMounted(() => {
   initTonWallet();
+	walletStatus()
 });
 
-
 const tonConnectUI = ref();
-const isWalletConnected = ref(false);
 const address = ref<string>("")
 
 const editedAddress = computed(() => {
 	if (!address.value) return ""
 	return address.value.slice(0, 6) + '...'
 })
-
-const getWalletAddress = async () => {
-	const data = await $fetch<{ton_wallet_address: string}>("/api/get-data", {
-		method: "POST",
-		body: JSON.stringify({ path: `${paths.get_wallets}/${store.user.profile?.user_id}` }),
-	});
-
-	return data.ton_wallet_address
-};
-
 
 const initTonWallet = async () => {
   tonConnectUI.value = new TonConnectUI({
@@ -49,36 +38,33 @@ const initTonWallet = async () => {
       theme: THEME.DARK,
     },
   };
-
-	const hasTonAddress = await getWalletAddress();
-
-	tonConnectUI.value.onStatusChange(async (wallet: any) => {
-    isWalletConnected.value = tonConnectUI.value.connected;
-
-		if (hasTonAddress) {
-			address.value = hasTonAddress;
-			return
-		} else {
-			address.value = wallet.account.address;
-		}
-
-		try {
-			const response = await $fetch("/api/update-data", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					path: `${paths.add_ton_address}/${store.user.profile?.user_id}`,
-					ton_wallet_address: wallet.account.address,
-				}),
-			});
-			console.log("ton wallet connect:", response);
-		} catch (error) {
-			console.error(error);
-		}
-  });
 };
+
+const walletStatus = () => {
+	if (store.user.wallets?.ton_wallet_address) {
+		address.value = store.user.wallets?.ton_wallet_address
+	} else {
+		tonConnectUI.value.onStatusChange(async (wallet: any) => {
+			address.value = wallet.account.address;
+
+			try {
+				const response = await $fetch("/api/update-data", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						path: `${paths.add_ton_address}/${store.user.profile?.user_id}`,
+						ton_wallet_address: wallet.account.address,
+					}),
+				});
+				console.log("ton wallet connect:", response);
+			} catch (error) {
+				console.error(error);
+			}
+		});
+	}
+}
 
 const connectTonWallet = async () => {
   await tonConnectUI.value.openModal();
