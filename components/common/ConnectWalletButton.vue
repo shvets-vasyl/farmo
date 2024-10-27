@@ -34,7 +34,7 @@ const connectOtherWallet = async () => {
 
 const walletStatus = () => {
 	if (store.user.wallets?.ethereum_wallet_address) {
-		addressWallet.value = store.user.wallets?.ton_wallet_address
+		addressWallet.value = store.user.wallets?.ethereum_wallet_address
 	} else {
 		setTimeout(async () => {
 			addressWallet.value = address
