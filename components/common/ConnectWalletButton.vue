@@ -2,10 +2,10 @@
   <button
     class="connect-wallet-btn"
     @click="connectOtherWallet"
-    :class="{ _connected: isConnected }"
+    :class="{ _connected: addressWallet }"
   >
 		<IconsEthereum />
-		<div class="t1" v-if="!isConnected || !address">Ethereum</div>
+		<div class="t1" v-if="!addressWallet">Ethereum</div>
 		<div class="t1" v-else>{{ editedAddress }}</div>
   </button>
 </template>
@@ -14,36 +14,31 @@
 import { paths } from "@/utils/api/paths";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/vue";
 
-const { address, isConnected } = useAppKitAccount();
-
+const { address } = useAppKitAccount();
 const modal = useAppKit();
 
+const addressWallet = ref()
+
+onMounted(() => {
+	walletStatus()
+});
+
 const editedAddress = computed(() => {
-	if (!address) return ""
-	return address.slice(0, 6) + '...'
+	if (!addressWallet.value) return ""
+	return addressWallet.value.slice(0, 6) + '...'
 })
 
 const connectOtherWallet = async () => {
   await modal.open();
 };
 
-const getWalletAddress = async () => {
-	const data = await $fetch<{ethereum_wallet_address: string}>("/api/get-data", {
-		method: "POST",
-		body: JSON.stringify({ path: `${paths.get_wallets}/${store.user.profile?.user_id}` }),
-	});
-
-	return data.ethereum_wallet_address
-};
-
-onMounted(async () => {
-	const hasWalletAddress = await getWalletAddress()
-
-	if (hasWalletAddress) {
-
+const walletStatus = () => {
+	if (store.user.wallets?.ethereum_wallet_address) {
+		addressWallet.value = store.user.wallets?.ton_wallet_address
 	} else {
 		setTimeout(async () => {
-			if (isConnected) {
+			addressWallet.value = address
+			if (address) {
 				try {
 					const response = await $fetch("/api/update-data", {
 						method: "POST",
@@ -62,7 +57,7 @@ onMounted(async () => {
 			}
 		}, 1000)
 	}
-});
+}
 </script>
 
 <style lang="scss" scoped>

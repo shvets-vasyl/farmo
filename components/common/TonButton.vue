@@ -17,7 +17,7 @@ import { TonConnectUI, THEME } from "@tonconnect/ui";
 const { SITE_URL } = useRuntimeConfig().public;
 
 onMounted(() => {
-  initTonWallet();
+	initTonWallet();
 	walletStatus()
 });
 
