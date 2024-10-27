@@ -6,7 +6,7 @@
   >
 		<IconsEthereum />
 		<div class="t1" v-if="!isConnected || !address">Ethereum</div>
-		<div class="t1" v-else>{{ address.slice(0, 6) + '...' }}</div>
+		<div class="t1" v-else>{{ editedAddress }}</div>
   </button>
 </template>
 
@@ -17,6 +17,11 @@ import { useAppKit, useAppKitAccount } from "@reown/appkit/vue";
 const { address, isConnected } = useAppKitAccount();
 
 const modal = useAppKit();
+
+const editedAddress = computed(() => {
+	if (!address) return ""
+	return address.slice(0, 6) + '...'
+})
 
 const connectOtherWallet = async () => {
   await modal.open();

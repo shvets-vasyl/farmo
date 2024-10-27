@@ -6,7 +6,7 @@
 	>
 		<IconsTon />
 		<div class="t1" v-if="!isWalletConnected || !address">TON</div>
-		<div class="t1" v-else>{{ address.slice(0, 6) + '...' }}</div>
+		<div class="t1" v-else>{{ editedAddress }}</div>
 	</button>
 </template>
 
@@ -20,9 +20,15 @@ onMounted(() => {
   initTonWallet();
 });
 
+
 const tonConnectUI = ref();
 const isWalletConnected = ref(false);
-const address = ref()
+const address = ref<string>("")
+
+const editedAddress = computed(() => {
+	if (!address.value) return ""
+	return address.value.slice(0, 6) + '...'
+})
 
 const initTonWallet = async () => {
   tonConnectUI.value = new TonConnectUI({
