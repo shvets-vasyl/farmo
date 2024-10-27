@@ -7,6 +7,7 @@
 		<IconsTon />
 		<div class="t1" v-if="!isWalletConnected || !address">TON</div>
 		<div class="t1" v-else>{{ editedAddress }}</div>
+		<div>{{ test }}</div>
 	</button>
 </template>
 
@@ -30,6 +31,8 @@ const editedAddress = computed(() => {
 	return address.value.slice(0, 6) + '...'
 })
 
+const test = ref()
+
 const initTonWallet = async () => {
   tonConnectUI.value = new TonConnectUI({
     manifestUrl: `${SITE_URL}/tonconnect-manifest.json`,
@@ -41,6 +44,8 @@ const initTonWallet = async () => {
   };
 
 	tonConnectUI.value.onStatusChange(async (wallet: any) => {
+		test.value = "scscs"
+
     isWalletConnected.value = tonConnectUI.value.connected;
     address.value = wallet.account.address;
 
