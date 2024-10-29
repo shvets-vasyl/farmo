@@ -34,6 +34,5 @@ const { isRed, isGrey, isTransparent } = props;
 }
 .common-btn._transparent {
   box-shadow: inset 0 0 0 1px var(--c-red);
-	color: var(--c-red);
 }
 </style>

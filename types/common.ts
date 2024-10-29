@@ -10,6 +10,7 @@ export interface Store {
     info: UserInfoInterface | null;
     referrals: UserReferralsInterface[] | null;
     wallets: UserWalletsInterface | null;
+		card: UserCardInterface | null;
   };
   game: {
     lvl_info: LvlInfoInterface | null;
@@ -24,6 +25,7 @@ export interface UserProfileInterface {
   last_name: string | null;
   phone_number: string;
   region: string;
+	card: string;
   user_id: number;
   username: string;
   photo: string | null;
@@ -34,6 +36,12 @@ export interface UserInfoInterface {
   clicks_days: number;
   lvl: "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | number;
   lvl_name: string;
+}
+
+export interface UserCardInterface {
+	card_cvv: string;
+  card_date: string;
+  card_number: string;
 }
 
 export interface UserReferralsInterface {

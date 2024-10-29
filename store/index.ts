@@ -11,6 +11,8 @@ export const store = reactive<Store>({
     profile: null,
     info: null,
     referrals: null,
+		wallets: null,
+		card: null,
   },
   game: {
     lvl_info: null,

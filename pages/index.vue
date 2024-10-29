@@ -44,6 +44,7 @@ onMounted(async () => {
       referrals: true,
       lvlInfo: true,
 			wallets: true,
+			card: true,
     });
   } catch (error) {
     console.error("Error fetching user data:", error);

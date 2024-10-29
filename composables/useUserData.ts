@@ -5,6 +5,7 @@ import type {
   UserReferralsInterface,
   LvlInfoInterface,
 	UserWalletsInterface,
+	UserCardInterface,
 } from "@/types/common";
 import { paths } from "@/utils/api/paths";
 import { getPhoto } from "@/utils/getPhoto"
@@ -66,6 +67,15 @@ export const useUserData = () => {
     return data;
   };
 
+	const fetchUserCard = async () => {
+    const data = await $fetch<UserCardInterface>("/api/get-data", {
+      method: "POST",
+      body: JSON.stringify({ path: paths.get_card + "/" + userId }),
+    });
+    store.user.card = data;
+    return data;
+  };
+
   const fetchGameLvlInfo = async () => {
     const data = await $fetch<LvlInfoInterface>("/api/get-data", {
       method: "POST",
@@ -80,6 +90,7 @@ export const useUserData = () => {
       profile?: boolean;
       info?: boolean;
       photo?: boolean;
+      card?: boolean;
       referrals?: boolean;
       wallets?: boolean;
       lvlInfo?: boolean;
@@ -103,6 +114,9 @@ export const useUserData = () => {
 		if (options.wallets) {
 			await fetchUserWallets()
 		}
+		if (options.card) {
+			await fetchUserCard()
+		}
   };
 
   return {
@@ -111,6 +125,7 @@ export const useUserData = () => {
     fetchUserPhoto,
     fetchUserReferrals,
     fetchGameLvlInfo,
+		fetchUserCard,
     refreshData,
   };
 };
