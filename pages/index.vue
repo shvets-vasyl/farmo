@@ -46,6 +46,11 @@ onMounted(async () => {
 			wallets: true,
 			card: true,
     });
+
+		if (store.user.profile?.is_ban) {
+			throw navigateTo("/error")
+		}
+
   } catch (error) {
     console.error("Error fetching user data:", error);
   } finally {
