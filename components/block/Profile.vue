@@ -154,7 +154,7 @@
 		</div>
 
     <div class="profile__inst">
-      <CommonConnectSocial />
+      <!-- <CommonConnectSocial /> -->
     </div>
   </TemplateBlock>
 </template>
