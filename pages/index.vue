@@ -47,7 +47,7 @@ onMounted(async () => {
 			card: true,
     });
 
-		if (store.user.profile?.is_ban) {
+		if (store.user.profile?.is_ban || !store.user.profile?.user_id || !store.user.profile?.phone_number) {
 			throw navigateTo("/error")
 		}
 
