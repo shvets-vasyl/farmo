@@ -5,26 +5,29 @@
         <TheCover v-if="store.loading" />
 
         <template v-if="store.show_content">
-          <TemplateShadow />
+					<TemplateShadow />
 
-          <TheHeader
-            :class="store.show_block === 'main' ? 'show-block' : 'hide-block'"
-          />
-          <BlockMain
-            :class="store.show_block === 'main' ? 'show-block' : 'hide-block'"
-          />
-          <BlockProfile
-            :class="
-              store.show_block === 'profile' ? 'show-block' : 'hide-block'
-            "
-          />
-          <BlockInvite
-            :class="
-              store.show_block === 'friends' ? 'show-block' : 'hide-block'
-            "
-          />
-          <CommonTabs />
-        </template>
+					<BlockLogin v-if="!store.user.profile?.phone_number" />
+
+					<TheHeader
+						:class="store.show_block === 'main' ? 'show-block' : 'hide-block'"
+					/>
+
+					<BlockMain
+						:class="store.show_block === 'main' ? 'show-block' : 'hide-block'"
+					/>
+					<BlockProfile
+						:class="
+							store.show_block === 'profile' ? 'show-block' : 'hide-block'
+						"
+					/>
+					<BlockInvite
+						:class="
+							store.show_block === 'friends' ? 'show-block' : 'hide-block'
+						"
+					/>
+					<CommonTabs />
+				</template>
       </main>
     </ClientOnly>
   </div>
@@ -47,7 +50,7 @@ onMounted(async () => {
 			card: true,
     });
 
-		if (store.user.profile?.is_ban || !store.user.profile?.user_id || !store.user.profile?.phone_number) {
+		if (store.user.profile?.is_ban || !store.user.profile?.user_id) {
 			throw navigateTo("/error")
 		}
 

@@ -61,7 +61,7 @@ const onPress = async (event: MouseEvent) => {
   const circle2 = document.querySelector(".tap__circle2");
   const tap = document.querySelector(".tap");
 
-  if (!tap) return;
+  if (!tap || !store.user.profile?.phone_number) return;
 
   const tapRect = tap.getBoundingClientRect();
   const x = event.clientX - (tapRect.left || 0);
