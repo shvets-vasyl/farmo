@@ -7,46 +7,12 @@
 // fonts
 
 :root {
-  --font-500: "Roboto-Medium";
-  --font-700: "Roboto-Bold";
+  --inter: "Inter";
+  --nunito: "Nunito";
 }
 
 // transitions
 
 :root {
   --default-ease: cubic-bezier(0.24, 1, 0.36, 1);
-}
-
-// colors
-
-:root {
-	--c-white: #ffffff;
-	--c-black: #000000;
-  --c-red: #F93838;
-  --c-pink: #FF8080;
-  --c-grey-1: #2C2F35;
-  --c-grey-2: #32363C;
-  --c-grey-3: #717277;
-  --c-grey-4: #212429;
-  --c-grey-5: #ABABAB;
-}
-
-// z-index
-
-:root {
-	--z-cover: 9000;
-  --z-header: 800;
-  --z-tabs: 1000;
-	--z-block: 900;
-	--z-limit-block: 1100;
-}
-
-// gaps
-
-:root {
-  --8: #{rem(8)};
-
-  @include mobile {
-    --8: #{rem(8)};
-  }
 }

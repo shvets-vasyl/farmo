@@ -2,8 +2,8 @@
   <div>
     <ClientOnly>
       <main class="error">
-				<div class="h2">Error Getting Data</div>
-				<div class="h2">Try Again Later</div>
+				<div>Error Getting Data</div>
+				<div>Try Again Later</div>
 			</main>
 		</ClientOnly>
 	</div>
@@ -18,5 +18,9 @@
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
+	font-size: 2rem;
+	font-weight: 800;
+	background: #000;
+	color: white;
 }
 </style>

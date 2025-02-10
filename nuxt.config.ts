@@ -20,7 +20,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       charset: "utf-8",
-      title: "Panda Tap App",
+      title: "Farmoooo",
       htmlAttrs: {
         lang: "en",
       },
@@ -35,7 +35,7 @@ export default defineNuxtConfig({
 					content: "upgrade-insecure-requests",
 				},
       ],
-			link: [{ rel: "icon", type: "image/png", href: "/tab-main.png" }],
+			link: [{ rel: "icon", type: "image/png", href: "/item.png" }],
       script: [{ src: "https://telegram.org/js/telegram-web-app.js" }],
     },
   },
@@ -47,14 +47,5 @@ export default defineNuxtConfig({
 		port: 3333,
 	},
 
-	runtimeConfig: {
-    public: {
-			API: process.env.API,
-      SITE_URL: process.env.SITE_URL,
-			PROJECT_ID: process.env.PROJECT_ID,
-    },
-  },
-
   compatibilityDate: "2024-04-03",
-  devtools: { enabled: true },
 });
