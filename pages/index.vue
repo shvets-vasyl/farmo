@@ -44,22 +44,23 @@
 
       <div class="items">
         <div v-for="(item, i) in info" :key="i" class="item">
-          <div class="left">
-            <p>{{ item.type }}</p>
-            <p>{{ item.from }}</p>
-          </div>
-          <div class="right">
-            <p>
-              <img src="/item.svg" alt="" />
-              <span class="item-number">{{ item.number }}</span>
-            </p>
-            <p class="item-percent">{{ item.percent }}</p>
-          </div>
+          <p class="item-type">{{ item.type }}</p>
+          <p class="item-number-wrap">
+            <img src="/item.svg" alt="" />
+            <span class="item-number">{{ item.number }}</span>
+          </p>
+          <p class="item-percent">{{ item.percent }}</p>
         </div>
       </div>
 
-      <div class="tap" @pointerup="onMouseUp" @pointerdown="onMouseDown">
-        <img src="/tap.png" alt="" />
+      <div
+        class="tap"
+        @pointerup="onMouseUp"
+        @pointerdown="onMouseDown"
+        @click="vibrate"
+      >
+        <img v-if="tapDisabled" src="/tap-unactive.png" alt="" />
+        <img v-else src="/tap-active.png" alt="" />
       </div>
 
       <div class="finish">
@@ -67,7 +68,14 @@
         <div class="time">{{ countdown }}</div>
       </div>
 
-      <button class="get-btn">Забрати FPI BANKI</button>
+      <button
+        class="get-btn"
+        :disabled="btnDisabled"
+        @pointerup="onMouseUpGetBtn"
+        @pointerdown="onMouseDownGetBtn"
+      >
+        Забрати FPI BANKI
+      </button>
 
       <div class="info">
         <div class="head">
@@ -126,8 +134,8 @@
             </svg>
 
             <div class="invited-text">
-              <p class="invited-count">5/10</p>
-              <p class="invited-status">INVITED</p>
+              <p class="invited-count">2 days</p>
+              <p class="invited-status">streak</p>
             </div>
           </div>
         </div>
@@ -152,41 +160,42 @@
             <span class="copy-title">Copy link</span>
           </div>
           <p class="copy-info">1 друг = +1 FPI BANKI +1% до фарму</p>
+
+          <div class="soc">
+            <a href="https://x.com/home" target="_blank">
+              <svg
+                viewBox="0 0 47 47"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M23.3132 46.4895H23.211C10.4259 46.4895 0.0241394 36.0847 0.0241394 23.2959V23.1936C0.0241394 10.4048 10.4259 0 23.211 0H23.3132C36.0983 0 46.5 10.4048 46.5 23.1936V23.2959C46.5 36.0847 36.0983 46.4895 23.3132 46.4895ZM23.211 1.57362C11.2927 1.57362 1.5973 11.2719 1.5973 23.1936V23.2959C1.5973 35.2177 11.2927 44.9159 23.211 44.9159H23.3132C35.2315 44.9159 44.9268 35.2177 44.9268 23.2959V23.1936C44.9268 11.2719 35.2315 1.57362 23.3132 1.57362H23.211Z"
+                  fill="#E9E9E9"
+                />
+                <path
+                  d="M9.91775 10.9556L20.2723 24.8035L9.85324 36.0627H12.1988L21.3216 26.2056L28.6918 36.0627H36.6725L25.7359 21.4359L35.4344 10.9556H33.0888L24.6881 20.0338L17.9 10.9556H9.91931H9.91775ZM13.3661 12.6834H17.0316L33.221 34.3349H29.5555L13.3661 12.6834Z"
+                  fill="#E9E9E9"
+                />
+              </svg>
+            </a>
+            <a href="https://web.telegram.org/" target="_blank">
+              <svg
+                viewBox="0 0 47 47"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M23.7891 46.4895H23.6868C10.9017 46.4895 0.5 36.0848 0.5 23.2959V23.1936C0.5 10.4048 10.9017 0 23.6868 0H23.7891C36.5741 0 46.9759 10.4048 46.9759 23.1936V23.2959C46.9759 36.0848 36.5741 46.4895 23.7891 46.4895ZM23.6868 1.57362C11.7685 1.57362 2.07316 11.2718 2.07316 23.1936V23.2959C2.07316 35.2177 11.7685 44.9159 23.6868 44.9159H23.7891C35.7073 44.9159 45.4027 35.2177 45.4027 23.2959V23.1936C45.4027 11.2718 35.7073 1.57362 23.7891 1.57362H23.6868Z"
+                  fill="#E9E9E9"
+                />
+                <path
+                  d="M9.79104 22.4776C9.85397 22.4462 9.91693 22.4162 9.97828 22.3879C11.0449 21.8938 12.1256 21.4312 13.2048 20.9685C13.263 20.9685 13.3605 20.9008 13.4156 20.8788C13.499 20.8426 13.5824 20.808 13.6658 20.7718C13.8262 20.7026 13.9867 20.6349 14.1456 20.5657C14.4665 20.4288 14.7858 20.2919 15.1068 20.155C15.747 19.8812 16.3873 19.6073 17.0276 19.332C18.3081 18.7843 19.5903 18.2351 20.8708 17.6875C22.1514 17.1399 23.4335 16.5907 24.7141 16.0431C25.9946 15.4954 27.2767 14.9463 28.5573 14.3986C29.8378 13.851 31.12 13.3018 32.4005 12.7542C32.6853 12.6315 32.9936 12.4489 33.2988 12.3954C33.5552 12.3498 33.8053 12.2617 34.0633 12.2129C34.5526 12.12 35.0922 12.0823 35.561 12.2853C35.723 12.3561 35.8725 12.4552 35.9968 12.5795C36.5914 13.1681 36.508 14.1343 36.3822 14.962C35.5059 20.7309 34.6297 26.5014 33.7519 32.2703C33.6323 33.0618 33.4687 33.9305 32.8441 34.4309C32.3156 34.8542 31.5636 34.9014 30.9107 34.722C30.2579 34.541 29.6821 34.1618 29.1173 33.7888C26.7749 32.2372 24.4309 30.6856 22.0885 29.134C21.5316 28.7658 20.9117 28.2843 20.918 27.6155C20.9212 27.2127 21.1619 26.8538 21.4073 26.5344C23.4429 23.8781 26.38 22.0527 28.5652 19.5192C28.8735 19.162 29.1158 18.5168 28.6926 18.3107C28.4409 18.1879 28.1514 18.3547 27.9217 18.5136C25.0334 20.52 22.1467 22.528 19.2584 24.5343C18.316 25.189 17.3281 25.8625 16.1923 26.023C15.176 26.1677 14.1535 25.8845 13.1702 25.595C12.3459 25.3526 11.5231 25.104 10.7035 24.8475C10.2677 24.7121 9.81779 24.5658 9.48114 24.2589C9.14448 23.9521 8.95101 23.436 9.15394 23.0268C9.28137 22.7703 9.52836 22.6082 9.78793 22.4761L9.79104 22.4776Z"
+                  fill="#E9E9E9"
+                />
+              </svg>
+            </a>
+          </div>
         </div>
-      </div>
-      <div class="soc">
-        <a href="https://x.com/home" target="_blank">
-          <svg
-            viewBox="0 0 47 47"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M23.3132 46.4895H23.211C10.4259 46.4895 0.0241394 36.0847 0.0241394 23.2959V23.1936C0.0241394 10.4048 10.4259 0 23.211 0H23.3132C36.0983 0 46.5 10.4048 46.5 23.1936V23.2959C46.5 36.0847 36.0983 46.4895 23.3132 46.4895ZM23.211 1.57362C11.2927 1.57362 1.5973 11.2719 1.5973 23.1936V23.2959C1.5973 35.2177 11.2927 44.9159 23.211 44.9159H23.3132C35.2315 44.9159 44.9268 35.2177 44.9268 23.2959V23.1936C44.9268 11.2719 35.2315 1.57362 23.3132 1.57362H23.211Z"
-              fill="#E9E9E9"
-            />
-            <path
-              d="M9.91775 10.9556L20.2723 24.8035L9.85324 36.0627H12.1988L21.3216 26.2056L28.6918 36.0627H36.6725L25.7359 21.4359L35.4344 10.9556H33.0888L24.6881 20.0338L17.9 10.9556H9.91931H9.91775ZM13.3661 12.6834H17.0316L33.221 34.3349H29.5555L13.3661 12.6834Z"
-              fill="#E9E9E9"
-            />
-          </svg>
-        </a>
-        <a href="https://web.telegram.org/" target="_blank">
-          <svg
-            viewBox="0 0 47 47"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M23.7891 46.4895H23.6868C10.9017 46.4895 0.5 36.0848 0.5 23.2959V23.1936C0.5 10.4048 10.9017 0 23.6868 0H23.7891C36.5741 0 46.9759 10.4048 46.9759 23.1936V23.2959C46.9759 36.0848 36.5741 46.4895 23.7891 46.4895ZM23.6868 1.57362C11.7685 1.57362 2.07316 11.2718 2.07316 23.1936V23.2959C2.07316 35.2177 11.7685 44.9159 23.6868 44.9159H23.7891C35.7073 44.9159 45.4027 35.2177 45.4027 23.2959V23.1936C45.4027 11.2718 35.7073 1.57362 23.7891 1.57362H23.6868Z"
-              fill="#E9E9E9"
-            />
-            <path
-              d="M9.79104 22.4776C9.85397 22.4462 9.91693 22.4162 9.97828 22.3879C11.0449 21.8938 12.1256 21.4312 13.2048 20.9685C13.263 20.9685 13.3605 20.9008 13.4156 20.8788C13.499 20.8426 13.5824 20.808 13.6658 20.7718C13.8262 20.7026 13.9867 20.6349 14.1456 20.5657C14.4665 20.4288 14.7858 20.2919 15.1068 20.155C15.747 19.8812 16.3873 19.6073 17.0276 19.332C18.3081 18.7843 19.5903 18.2351 20.8708 17.6875C22.1514 17.1399 23.4335 16.5907 24.7141 16.0431C25.9946 15.4954 27.2767 14.9463 28.5573 14.3986C29.8378 13.851 31.12 13.3018 32.4005 12.7542C32.6853 12.6315 32.9936 12.4489 33.2988 12.3954C33.5552 12.3498 33.8053 12.2617 34.0633 12.2129C34.5526 12.12 35.0922 12.0823 35.561 12.2853C35.723 12.3561 35.8725 12.4552 35.9968 12.5795C36.5914 13.1681 36.508 14.1343 36.3822 14.962C35.5059 20.7309 34.6297 26.5014 33.7519 32.2703C33.6323 33.0618 33.4687 33.9305 32.8441 34.4309C32.3156 34.8542 31.5636 34.9014 30.9107 34.722C30.2579 34.541 29.6821 34.1618 29.1173 33.7888C26.7749 32.2372 24.4309 30.6856 22.0885 29.134C21.5316 28.7658 20.9117 28.2843 20.918 27.6155C20.9212 27.2127 21.1619 26.8538 21.4073 26.5344C23.4429 23.8781 26.38 22.0527 28.5652 19.5192C28.8735 19.162 29.1158 18.5168 28.6926 18.3107C28.4409 18.1879 28.1514 18.3547 27.9217 18.5136C25.0334 20.52 22.1467 22.528 19.2584 24.5343C18.316 25.189 17.3281 25.8625 16.1923 26.023C15.176 26.1677 14.1535 25.8845 13.1702 25.595C12.3459 25.3526 11.5231 25.104 10.7035 24.8475C10.2677 24.7121 9.81779 24.5658 9.48114 24.2589C9.14448 23.9521 8.95101 23.436 9.15394 23.0268C9.28137 22.7703 9.52836 22.6082 9.78793 22.4761L9.79104 22.4776Z"
-              fill="#E9E9E9"
-            />
-          </svg>
-        </a>
       </div>
     </div>
   </main>
@@ -194,6 +203,12 @@
 
 <script lang="ts" setup>
 import gsap from "gsap";
+
+declare global {
+  interface Window {
+    TapticEngine?: { impact: (style: "light" | "medium" | "heavy") => void };
+  }
+}
 
 const info = [
   {
@@ -210,15 +225,46 @@ const info = [
   },
 ];
 
+const vibrate = () => {
+  if ("vibrate" in navigator) {
+    navigator.vibrate(50);
+  } else if (window.TapticEngine) {
+    window.TapticEngine?.impact("light");
+  }
+};
+
+const tapDisabled = ref(false);
+
 const onMouseDown = () => {
+  if (tapDisabled.value) return;
+
   gsap.to(".tap", {
-    scale: 0.9,
+    scale: 0.95,
+    duration: 0.25,
   });
 };
 const onMouseUp = () => {
+  if (tapDisabled.value) return;
+
   gsap.to(".tap", {
     scale: 1,
+    duration: 0.25,
   });
+};
+
+const btnDisabled = ref(false);
+
+const onMouseDownGetBtn = () => {
+  if (btnDisabled.value) return;
+
+  const btn = document.querySelector(".get-btn");
+  btn?.classList.add("_active");
+};
+const onMouseUpGetBtn = () => {
+  if (btnDisabled.value) return;
+
+  const btn = document.querySelector(".get-btn");
+  btn?.classList.remove("_active");
 };
 
 const countdown = ref("00 : 00 : 00");
@@ -258,14 +304,14 @@ const updateCountdown = () => {
 const copySuccess = ref(false);
 
 const copyReferralLink = async () => {
-  const referralText = `copy link`;
+  const referralText = `copied text!`;
 
   await navigator.clipboard.writeText(referralText);
   copySuccess.value = true;
 
   setTimeout(() => {
     copySuccess.value = false;
-  }, 2000);
+  }, 800);
 };
 
 onMounted(() => {
@@ -286,7 +332,7 @@ onUnmounted(() => {
   padding-bottom: 2.8125rem;
 }
 .wrap {
-  width: 17rem;
+  width: 21rem;
   margin: 0 auto;
   padding-top: 4rem;
 }
@@ -297,6 +343,7 @@ onUnmounted(() => {
   gap: 0.4375rem;
   font-variation-settings: "wght" 800;
   margin-bottom: 1.4375rem;
+  font-size: 1.25rem;
 }
 .name img {
   width: 2rem;
@@ -316,7 +363,7 @@ onUnmounted(() => {
   margin-bottom: 0.6875rem;
 }
 .balance-number {
-  font-size: 3.25rem;
+  font-size: 3.3125rem;
   font-variation-settings: "wght" 800;
 }
 .today-percentage svg {
@@ -326,7 +373,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   color: black;
-  margin-top: 0.9375rem;
+  margin-top: 0.7rem;
 }
 .today-percentage {
   background: white;
@@ -342,48 +389,44 @@ onUnmounted(() => {
   color: white;
   margin-left: 0.6875rem;
 }
-.item {
+.item-type {
+  font-size: 1.125rem;
+}
+.item-number-wrap {
+  width: 1.125rem;
+  display: flex;
+  gap: 0.3125rem;
+  margin-top: 0.375rem;
+}
+.item-number-wrap img {
+  width: 0.875rem;
+}
+.item-number {
+  font-variation-settings: "wght" 600;
+  color: #e4e4f0;
+}
+.item-percent {
+  font-family: var(--nunito);
+  color: #7e47be;
+  font-size: 0.9375rem;
+}
+.item-type {
+  font-variation-settings: "wght" 600;
+  color: #e4e4f0;
+}
+.items {
+  margin-top: 1rem;
   display: flex;
   justify-content: space-between;
 }
-.left p:first-child {
-  font-size: 0.9rem;
-  font-family: var(--nunito);
-}
-.left p:last-child {
-  font-size: 0.6rem;
-  font-variation-settings: "wght" 900;
-}
-.right {
-  text-align: right;
-}
-.right p:first-child {
-  display: flex;
-  gap: 0.2rem;
-  align-items: center;
-  font-size: 1.25rem;
-  font-family: var(--nunito);
-}
-.right p:first-child img {
-  width: 1.125rem;
-}
-.right p:last-child {
-  font-family: var(--nunito);
-  color: #7e47be;
-  font-size: 0.8rem;
-}
-.items {
-  margin-top: 2.9375rem;
-}
-.item:not(:last-child) {
-  margin-bottom: 2rem;
-}
 .tap {
-  width: 16.8125rem;
+  width: 100%;
   margin: 2rem auto;
+  display: flex;
+  justify-content: center;
 }
 .tap img {
-  width: 100%;
+  width: 105%;
 }
 .finish {
   margin-top: 1.5rem;
@@ -395,14 +438,9 @@ onUnmounted(() => {
   text-transform: uppercase;
 }
 .time {
-  box-shadow: 0px 0px 0.47rem 0px rgba(255, 255, 255, 0.4);
-  background: linear-gradient(144deg, #28272f 9.13%, #040404 62.89%);
-  border: 0.633px solid rgba(255, 255, 255, 0.3);
-  border-radius: 0.9375rem;
-  padding: 0.75rem 0;
-  font-size: 1.8rem;
+  font-size: 3.3125rem;
   font-variation-settings: "wght" 400;
-  margin-top: 1.125rem;
+  margin-top: 0.8rem;
   background: linear-gradient(63deg, #eef1f0 7.18%, #71757e 83.56%);
   background-clip: text;
   -webkit-background-clip: text;
@@ -412,30 +450,53 @@ onUnmounted(() => {
   margin-top: 1.875rem;
   border-radius: 15px;
   border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 0.9375rem;
+  border: 1px solid rgba(white, 0.8);
 
+  padding: 1.4375rem 0;
+  text-align: center;
+  font-size: 1.25rem;
+
+  text-transform: uppercase;
+  font-family: var(--inter);
+  font-variation-settings: "wght" 700;
+  width: 100%;
+
+  color: white;
   background: linear-gradient(
     144deg,
     rgba(161, 230, 53, 0.4) 9.13%,
     rgba(93, 139, 20, 0.4) 62.89%
   );
-  padding: 1.4375rem 0;
-  text-align: center;
-  font-size: 1rem;
-
-  text-transform: uppercase;
-  font-variation-settings: "wght" 400;
-  width: 100%;
-  color: white;
+  transition: all 0.3s ease;
+}
+.get-btn[disabled] {
+  background: linear-gradient(144deg, #28272f 9.13%, #040404 62.89%),
+    linear-gradient(
+      90deg,
+      rgba(65, 65, 65, 0.4) 0%,
+      rgba(167, 167, 167, 0.4) 100%
+    );
+  color: rgba(white, 0.5);
+  border-color: rgba(white, 0.4);
+}
+.get-btn._active {
+  transform: scale(0.95);
+  background: linear-gradient(
+    144deg,
+    rgba(206, 255, 129, 0.4) 9.13%,
+    rgba(142, 191, 64, 0.4) 62.89%
+  );
 }
 .info {
   background: linear-gradient(144deg, #28272f 9.13%, #040404 62.89%),
     linear-gradient(107deg, #2c2c2c 0%, #242424 100.86%);
   border-radius: 0.9375rem;
-  margin-top: 2rem;
-  box-shadow: 0px 0px 30px 0px rgba(#a1e635, 0.3);
+  margin-top: 1.125rem;
+  box-shadow: 0px 0px 1.875rem 0px rgba(#a1e635, 0.3);
 }
 .invited svg {
-  width: 1.4rem;
+  width: 1.875rem;
 }
 .invited {
   display: flex;
@@ -443,11 +504,19 @@ onUnmounted(() => {
   border-radius: 15px;
   align-items: center;
 }
+.invited:nth-child(2) svg {
+  width: 1.5625rem;
+}
 .invited-count,
 .invited-status {
-  font-size: 0.7rem;
+  font-size: 1rem;
   font-variation-settings: "wght" 600;
+}
+.invited-status {
   text-transform: uppercase;
+}
+.invited-count {
+  text-transform: capitalize;
 }
 .head {
   padding: 1.5625rem 1.4375rem 1.3125rem;
@@ -456,9 +525,10 @@ onUnmounted(() => {
   border-bottom: 1px solid #6e6e6e;
 }
 .soc {
-  margin-top: 2rem;
+  margin-top: 1.25rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 3.75rem;
 }
 .soc svg {
   width: 2.8rem;
@@ -474,28 +544,28 @@ onUnmounted(() => {
   position: relative;
 }
 .copy svg {
-  width: 1.5rem;
+  width: 2.0625rem;
 }
 .foot {
   padding: 1.25rem 0;
 }
 .copy-title {
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   font-variation-settings: "wght" 600;
 }
 .copy-info {
   text-align: center;
-  font-size: 0.5rem;
+  font-size: 0.625rem;
   font-variation-settings: "wght" 400;
   color: #c4c4c4;
-  margin-top: 0.9375rem;
+  margin-top: 1rem;
 }
 .copy-status {
-  font-size: 0.6rem;
+  font-size: 0.625rem;
   font-variation-settings: "wght" 400;
   position: absolute;
   top: 50%;
-  left: 3rem;
+  left: 4rem;
   transform: translateY(-50%);
 }
 </style>
