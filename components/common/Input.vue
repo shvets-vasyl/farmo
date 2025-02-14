@@ -31,8 +31,7 @@ defineEmits(["update:modelValue"]);
 .input {
   width: 100%;
   color: var(--c-accent);
-  height: 3.5rem;
-  padding: 0 1rem;
+  padding: 1.1rem 1rem;
   border-radius: 0.625rem;
   font-family: var(--inter);
   font-size: 1rem;
