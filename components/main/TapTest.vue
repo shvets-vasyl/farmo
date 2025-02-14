@@ -32,7 +32,7 @@ const vibrate = () => {
 }
 
 const tapDisabled = ref(false);
-const isFarming = ref(true)
+const isFarming = ref(false)
 
 const onMouseDown = () => {
   if (tapDisabled.value || isFarming.value) return

@@ -13,12 +13,12 @@
 
 			<MainItems />
 
-      <MainTap />
+      <MainTapTest />
 
       <MainFinish />
 
 			<div class="get-btn">
-				<CommonButton text="Забрати FPI BANKI" :disabled="true" />
+				<CommonButton text="Забрати FPI BANKI" :disabled="false" />
 			</div>
 
       <MainInfo />
