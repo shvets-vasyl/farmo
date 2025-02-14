@@ -1,34 +1,35 @@
 <template>
   <button
-    class="get-btn"
-    :disabled="btnDisabled"
+		ref="btnRef"
+    class="btn"
+    :disabled="disabled"
     @pointerup="onMouseUpGetBtn"
     @pointerdown="onMouseDownGetBtn"
   >
-    Забрати FPI BANKI
+    {{ text }}
   </button>
 </template>
 
 <script lang="ts" setup>
-const btnDisabled = ref(false);
+const props = defineProps<{ text: string, disabled: boolean }>()
+const { disabled, text } = toRefs(props)
+
+const btnRef = ref()
 
 const onMouseDownGetBtn = () => {
-  if (btnDisabled.value) return;
+  if (disabled) return;
 
-  const btn = document.querySelector(".get-btn");
-  btn?.classList.add("_active");
+  btnRef.value.classList.add("_active");
 };
 const onMouseUpGetBtn = () => {
-  if (btnDisabled.value) return;
+  if (disabled) return;
 
-  const btn = document.querySelector(".get-btn");
-  btn?.classList.remove("_active");
+	btnRef.value.classList.remove("_active");
 };
 </script>
 
 <style lang="scss" scoped>
-.get-btn {
-  margin-top: 1.875rem;
+.btn {
   border-radius: 15px;
   border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 0.9375rem;
@@ -51,7 +52,7 @@ const onMouseUpGetBtn = () => {
   );
   transition: all 0.3s ease;
 }
-.get-btn[disabled] {
+.btn[disabled] {
   background: linear-gradient(144deg, #28272f 9.13%, #040404 62.89%),
     linear-gradient(
       90deg,
@@ -61,7 +62,7 @@ const onMouseUpGetBtn = () => {
   color: rgba(white, 0.5);
   border-color: rgba(white, 0.4);
 }
-.get-btn._active {
+.btn._active {
   transform: scale(0.95);
   background: linear-gradient(
     144deg,

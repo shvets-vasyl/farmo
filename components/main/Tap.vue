@@ -6,12 +6,16 @@
     @click="vibrate"
   >
     <img v-if="tapDisabled" src="/tap-unactive.png" alt="" />
-    <img v-else src="/tap-active.png" alt="" />
+
+		<div v-else-if="isFarming" class="farming" />
+
+    <img v-else-if="!tapDisabled" src="/tap-active.png" alt="" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import gsap from "gsap";
+import lottie from "lottie-web"
 
 declare global {
   interface Window {
@@ -28,6 +32,7 @@ const vibrate = () => {
 }
 
 const tapDisabled = ref(false);
+const isFarming = ref(true)
 
 const onMouseDown = () => {
   if (tapDisabled.value) return
@@ -45,6 +50,30 @@ const onMouseUp = () => {
     duration: 0.25,
   });
 };
+
+const animLottie = () => {
+  const tapContainer = document.querySelector(".tap .farming")
+
+  if (tapContainer) {
+    const tapLottie = lottie.loadAnimation({
+      container: tapContainer,
+      renderer: "canvas",
+      loop: true,
+      autoplay: true,
+      path: "/tap.json",
+    })
+    tapLottie.setSpeed(0.5)
+    tapLottie.pause()
+  }
+}
+
+onMounted(async () => {
+	await nextTick()
+
+	if (isFarming.value) {
+		animLottie()
+	}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -53,6 +82,10 @@ const onMouseUp = () => {
   margin: 2rem auto;
   display: flex;
   justify-content: center;
+}
+.farming {
+	width: 100%;
+	aspect-ratio: 1;
 }
 .tap img {
   width: 105%;
