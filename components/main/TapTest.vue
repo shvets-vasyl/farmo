@@ -9,7 +9,7 @@
 
 		<div v-else-if="isFarming" class="farming" />
 
-    <img v-else-if="!tapDisabled" src="/tap-active.png" alt="" />
+    <img v-else-if="!tapDisabled" src="/tap-active.png" class="tap-active" alt="" />
   </div>
 </template>
 
@@ -89,5 +89,26 @@ onMounted(async () => {
 }
 .tap img {
   width: 105%;
+}
+.tap-active {
+	animation: buttonAnimation 1.5s ease-in-out infinite;
+}
+@keyframes buttonAnimation {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  80% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 </style>
